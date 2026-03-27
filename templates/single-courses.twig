@@ -1,0 +1,92 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<main class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <section class="md:col-span-2">
+            {# 1. Renderizado de Imagen Secundaria (Si existe) #}
+            {% if img_secundaria %}
+                <img src="{{ img_secundaria }}" alt="Imagen destacada del curso {{ post.title }}" class="w-full h-auto rounded-xl mb-8 shadow-md">
+            {% endif %}
+
+            <h1 class="text-4xl font-bold text-blue-900 mb-6">{{ post.title }}</h1>
+
+            <div class="prose max-w-none text-gray-700 mb-8">
+                {{ post.content }}
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-200 space-y-4">
+                {# 2. Renderizado de Requisitos (PDF principal) #}
+                {% if pdf_requisitos %}
+                    <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <div>
+                            <p class="font-semibold text-gray-900">Requisitos y Detalles</p>
+                            <a href="{{ pdf_requisitos }}" target="_blank" class="text-sm text-blue-600 hover:text-blue-800 underline">Descargar documento PDF</a>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Resolución Legal (Ya estaba, lo movemos aquí abajo) #}
+                {% if resolucion_pdf %}
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                         <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                         <a href="{{ resolucion_pdf }}" target="_blank" class="hover:text-blue-800">
+                            {{ resolucion_texto|default('Ver Resolución Legal') }}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <aside class="space-y-8 h-fit">
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Valores Pago Contado</h3>
+
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                        <span class="text-gray-600">Valor Normal</span>
+                        {# Usamos el filtro |number_format para poner puntos en los miles #}
+                        <span class="font-medium text-gray-900">${{ precio_normal|number_format(0, ',', '.') }}</span>
+                    </div>
+                    {% if precio_oferta %}
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                        <span class="text-gray-600 font-semibold">Valor Oferta</span>
+                        <span class="text-2xl font-bold text-green-600">${{ precio_oferta|number_format(0, ',', '.') }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <button class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                    Contactar para Matrícula
+                </button>
+            </div>
+
+            {# 3. Bucle para Renderizar Descargas Adicionales (Complex Field) #}
+            {# Primero verificamos que el array no esté vacío #}
+            {% if descargas is not empty %}
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-5 border-b-2 border-blue-600 pb-2 inline-block">Descargas</h3>
+                    <ul class="space-y-4">
+                        {# Iniciamos el bucle for #}
+                        {% for descarga in descargas %}
+                            {# Cada 'descarga' es un array interno con los IDs definidos en cpt.php: 'titulo' y 'archivo' #}
+                            {% if descarga.archivo %}
+                            <li class="flex items-center gap-3">
+                                {# Ícono de documento #}
+                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                <a href="{{ descarga.archivo }}" target="_blank" class="text-gray-700 hover:text-blue-700 hover:underline">
+                                    {{ descarga.titulo|default('Documento') }}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </aside>
+
+        </div>
+    </main>
+    {% endblock %}

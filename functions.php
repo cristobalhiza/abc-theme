@@ -3,8 +3,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-    require_once __DIR__ . '/vendor/autoload.php';
+$composer_autoload = __DIR__ . '/vendor/autoload.php';
+
+if ( file_exists( $composer_autoload ) ) {
+    require_once $composer_autoload;
+} else {
+    wp_die('Error fatal: Falta el directorio vendor en el tema. Ejecuta composer install.');
 }
 
 Timber\Timber::init();
