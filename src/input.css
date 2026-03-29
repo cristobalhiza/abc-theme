@@ -1,6 +1,38 @@
 @import "tailwindcss";
-
 @source "../templates/**/*.twig";
 @source "../*.php";
 
-/* CSS PERSONALIZADO COMIENZA AQUÍ */
+/* 1. Declaración de fuentes locales */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('./assets/fonts/SpaceGrotesk.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* 2. Asignación a las variables de Tailwind v4 */
+@theme {
+  --color-primary: #0683c1;
+  --color-background-light: #f4f7fb;
+  /* ... tus otros colores ... */
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Satoshi", sans-serif;
+
+  --shadow-float: 0 20px 40px -10px rgba(6, 131, 192, 0.08);
+}
+
+@layer base {
+  body {
+    @apply bg-background-light text-text-main font-body antialiased;
+  }
+}

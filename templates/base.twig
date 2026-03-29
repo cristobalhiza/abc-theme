@@ -1,46 +1,39 @@
 <!DOCTYPE html>
-<html lang="{{ site.language }}">
+<html lang="es">
 <head>
-    <meta charset="{{ site.charset }}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>{{ wp_title }}</title>
-    
-    <link rel="stylesheet" href="{{ site.theme.link }}/style.css">
-    
+    <link rel="stylesheet" href="{{ site.theme.uri }}/style.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    {{ wp_head }}
+    {{ function('wp_head') }}
 </head>
-<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+<body class="bg-background-light text-text-main font-body antialiased selection:bg-primary selection:text-white">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ site.link }}" class="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">
-                {{ site.name }}
+    <nav x-data="{ isScrolled: false, isMobileMenuOpen: false }" 
+         @scroll.window="isScrolled = (window.pageYOffset > 20)"
+         :class="isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'"
+         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="{{ site.url }}" class="flex items-center gap-2 text-primary">
+                <div class="w-8 h-8">
+                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path></svg>
+                </div>
+                <span class="text-xl font-black tracking-tight text-text-main font-display">ABC Escuela</span>
             </a>
             
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#" class="hover:text-blue-600">Inicio</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Servicios</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Contacto</a></li>
-                </ul>
-            </nav>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="{{ site.url }}" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Inicio</a>
+                <a href="#" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Cursos</a>
+                <a href="#" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Contacto</a>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="flex-grow container mx-auto px-4 py-8">
-        {% block content %}
-            {% endblock %}
-    </main>
+    <div class="pt-24 min-h-screen">
+        {% block content %}{% endblock %}
+    </div>
 
-    <footer class="bg-gray-800 text-white mt-auto">
-        <div class="container mx-auto px-4 py-6 text-center">
-            <p>&copy; {{ "now"|date('Y') }} {{ site.name }}. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    {{ wp_footer }}
+    {{ function('wp_footer') }}
 </body>
 </html>
