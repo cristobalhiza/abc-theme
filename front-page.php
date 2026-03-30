@@ -5,7 +5,7 @@ $context['post'] = Timber::get_post();
 $args = [
     'post_type'      => 'courses',
     'posts_per_page' => 3,
-    'orderby'        => 'date', 
+    'orderby'        => 'menu_order',
     'order'          => 'ASC',
 ];
 $context['cursos'] = Timber::get_posts( $args );

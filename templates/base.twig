@@ -9,28 +9,29 @@
     {{ function('wp_head') }}
 </head>
 <body class="bg-background-light text-text-main font-body antialiased selection:bg-primary selection:text-white">
-
     <nav x-data="{ isScrolled: false, isMobileMenuOpen: false }" 
          @scroll.window="isScrolled = (window.pageYOffset > 20)"
          :class="isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'"
          class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-            <a href="{{ site.url }}" class="flex items-center gap-2 text-primary">
-                <div class="w-8 h-8">
-                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M24 4H42V17.3333V30.6667H24V44H6V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path></svg>
-                </div>
-                <span class="text-xl font-black tracking-tight text-text-main font-display">ABC Escuela</span>
-            </a>
+<div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <a href="{{ site.url }}" class="flex items-center transition-transform hover:scale-105">
+            <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp" 
+                 alt="Logo ABC Academia de Conducción" 
+                 :class="isScrolled ? 'h-10' : 'h-14'"
+                 class="w-auto transition-all duration-500 object-contain" />
+        </a>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="{{ site.url }}" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Inicio</a>
-                <a href="#" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Cursos</a>
-                <a href="#" class="text-sm font-semibold text-text-main hover:text-primary transition-colors">Contacto</a>
+                <a href="{{ site.url }}" class="text-sm font-medium uppercase tracking-wide text-text-main hover:text-primary transition-colors">Inicio</a>
+                <a href="#" class="text-sm font-medium uppercase tracking-wide text-text-main hover:text-primary transition-colors">Cursos</a>
+                <a href="#" class="text-sm font-medium uppercase tracking-wide text-text-main hover:text-primary transition-colors">Contacto</a>
+                <a href="https://abcconduccion.cl/aulavirtual" target="_blank" rel="noopener" class="text-sm font-medium uppercase tracking-wide text-text-main hover:text-primary transition-colors">Aula Virtual</a>
+                <a href="https://www.webpay.cl/company/29034" target="_blank" rel="nofollow noopener noreferrer" class="text-sm font-medium uppercase tracking-wide text-text-main hover:text-primary transition-colors">Paga aquí</a>
             </div>
         </div>
     </nav>
 
-    <div class="pt-24 min-h-screen">
+    <div class="min-h-screen">
         {% block content %}{% endblock %}
     </div>
 

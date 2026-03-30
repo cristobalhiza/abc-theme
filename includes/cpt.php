@@ -17,7 +17,7 @@ function abc_register_cursos_cpt() {
         'public'        => true,
         'has_archive'   => true,
         'menu_icon'     => 'dashicons-car',
-        'supports'      => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
+        'supports'      => [ 'title', 'editor', 'thumbnail', 'excerpt', 'page-attributes' ],
         'show_in_rest'  => true,
     ];
 
