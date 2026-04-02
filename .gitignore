@@ -7,9 +7,19 @@
 # Archivos temporales del sistema operativo
 .DS_Store
 Thumbs.db
+Desktop.ini
 
 # Archivos de registro y caché
 *.log
 .cache/
 tailwindcss
-tailwindcss
+
+# Archivos de zona de Windows/WSL (basura de metadatos)
+*:Zone.Identifier
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
