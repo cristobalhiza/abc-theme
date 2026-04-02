@@ -70,4 +70,13 @@ function abc_attach_curso_meta() {
                 ->set_attribute( 'type', 'number' )
                 ->set_help_text( 'ID del producto para pasarela de pago.' ),
         ) );
+
+    // Panel global: Opciones de la Escuela
+    Container::make( 'theme_options', 'Opciones de la Escuela' )
+        ->set_icon( 'dashicons-building' )
+        ->add_fields( array(
+            Field::make( 'media_gallery', 'abc_fotos_alumnos', 'Fotografías de Alumnos Aprobados' )
+                ->set_type( array( 'image' ) )
+                ->set_help_text( 'Sube aquí las fotos de los alumnos con los vehículos. Aparecerán en el carrusel de la página de inicio.' )
+        ) );
 }

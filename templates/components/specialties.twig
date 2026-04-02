@@ -1,0 +1,220 @@
+{# Ubicación: templates/components/specialties.twig #}
+
+{% set specialties = [
+    {
+        title: 'Material Didáctico',
+        desc: 'Guías de estudio actualizadas y manuales completos diseñados pedagógicamente para facilitar tu aprendizaje teórico.',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>',
+        shape: 'rounded-bl-full top-0 right-0'
+    },
+    {
+        title: 'Ensayos Psicotécnicos',
+        desc: 'Preparación en nuestro laboratorio psicotécnico con equipos certificados para evaluar tus reflejos y coordinación.',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        shape: 'rounded-br-full top-0 left-0'
+    },
+    {
+        title: 'Ensayos Audiovisuales',
+        desc: 'Material de preparación inmersiva en formatos de video y audio que recrean situaciones reales de tránsito.',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>',
+        shape: 'rounded-bl-full top-0 right-0'
+    },
+    {
+        title: 'Exámenes de Prueba',
+        desc: 'Entornos simulados de pruebas teóricas idénticos a los del municipio para garantizar tu seguridad al rendir.',
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="8" x="5" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 18h2"/><path d="M12 18h6"/></svg>',
+        shape: 'rounded-br-full top-0 left-0'
+    }
+] %}
+
+{% set totalSteps = specialties|length + 1 %}
+
+{# 
+    SCROLL-HIJACK: La sección ocupa (totalSteps * 100vh) de alto,
+    pero todo el contenido visual queda fijo con sticky.
+    Al hacer scroll "dentro" de este espacio fantasma, 
+    solo cambia la tarjeta activa y baja el ícono.
+#}
+{# Title Header — fuera del hijack, scrollea normalmente #}
+<div class="text-center py-16 max-w-2xl mx-auto relative z-10 px-4"
+     x-data="{ shown: false }"
+     @scroll.window="if(!shown && $el.getBoundingClientRect().top < (window.innerHeight * 0.8)) shown = true">
+    <div class="rounded-3xl transition-all duration-1000 ease-out transform bg-[rgba(250,250,250,0.5)]"
+         :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+        <div class="flex justify-center mb-4">
+            <div class="w-3 h-3 rounded-full bg-primary shadow-[0_0_15px_rgba(6,131,192,0.6)]"></div>
+        </div>
+        <h2 class="text-primary font-black tracking-[0.3em] uppercase text-xs mb-4">Herramientas</h2>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight font-display text-text-main">
+            Especialidades y Herramientas para tu Éxito
+        </h2>
+        <p class="text-muted text-base md:text-lg font-medium leading-relaxed">
+            Todo lo que necesitas para asegurar tu licencia de conducir con confianza y preparación de primer nivel.
+        </p>
+    </div>
+</div>
+
+<section id="specialties" 
+         class="relative"
+         x-data="specialtiesSpy()" 
+         x-ref="routeContainer"
+         @scroll.window="updateScroll()"
+         :style="'height: ' + totalSteps * 60 + 'vh'">
+
+    {# Solo tabs+tarjetas quedan sticky, el título ya se fue #}
+    <div class="sticky top-[80px] min-h-[calc(100vh-80px)] flex items-center py-8 overflow-hidden">
+
+        {# Layout Dividido #}
+        <div class="flex flex-col md:flex-row gap-8 lg:gap-12 relative z-10 max-w-6xl mx-auto px-4 w-full items-start">
+            
+            {# ======================= #}
+            {# COLUMNA IZQUIERDA (Menú + Timeline) #}
+            {# ======================= #}
+            <div class="md:w-1/3 relative hidden md:flex flex-col justify-center">
+                <div class="py-4 relative">
+                    
+                    {# Línea vertical idéntica a why-us #}
+                    <div class="absolute left-6 top-4 bottom-4 w-12 z-0">
+                        <div class="absolute inset-y-0 left-1/2 w-0 -translate-x-1/2 border-l-2 border-dashed border-gray-300"></div>
+                        <div class="absolute top-0 left-1/2 w-1 -translate-x-1/2 bg-primary transition-all duration-700 ease-out" 
+                             :style="'height: ' + lineProgress + '%'">
+                             {# El contenedor con la bolita y el ícono del carrito #}
+                             <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-surface p-2 rounded-full shadow-lg text-primary ring-4 ring-primary z-30 transition-all duration-700"
+                                  :class="lineProgress <= 0 ? 'opacity-0' : 'opacity-100'">
+                                  <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>
+                                  </svg>
+                             </div>
+                        </div>
+                    </div>
+
+                    {# Lista de pestañas laterales #}
+                    <div class="ml-24 space-y-10 py-4 relative z-10">
+                        {% for item in specialties %}
+                            <div class="cursor-pointer transition-all duration-500 transform" 
+                                 :class="activeIndex === {{ loop.index0 }} ? 'text-primary scale-105 origin-left' : 'text-gray-400 hover:text-gray-600'"
+                                 @click="goTo({{ loop.index0 }})">
+                                <h3 class="text-lg md:text-xl transition-colors duration-300 font-display"
+                                    :class="activeIndex === {{ loop.index0 }} ? 'font-black' : 'font-semibold'">{{ item.title }}</h3>
+                            </div>
+                        {% endfor %}
+                        {# Vehículos Extra Tab #}
+                        <div class="cursor-pointer transition-all duration-500 transform" 
+                             :class="activeIndex === {{ specialties|length }} ? 'text-primary scale-105 origin-left' : 'text-gray-400 hover:text-gray-600'"
+                             @click="goTo({{ specialties|length }})">
+                            <h3 class="text-lg md:text-xl transition-colors duration-300 font-display"
+                                :class="activeIndex === {{ specialties|length }} ? 'font-black' : 'font-semibold'">Vehículos de Práctica</h3>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {# ======================= #}
+            {# COLUMNA DERECHA (Tarjeta activa, cambia en el mismo lugar) #}
+            {# ======================= #}
+            <div class="w-full md:w-2/3 relative" style="min-height: 320px;">
+                
+                {# Cada tarjeta se muestra/oculta con transición en EL MISMO espacio #}
+                {% for item in specialties %}
+                    <div class="transition-all duration-700 ease-in-out w-full"
+                         :class="activeIndex === {{ loop.index0 }} ? 'opacity-100 translate-y-0 scale-100 relative z-10' : 'opacity-0 translate-y-8 scale-95 absolute inset-0 z-0 pointer-events-none'">
+                        
+                        <div class="bg-surface rounded-3xl p-6 md:p-10 shadow-float border transition-all duration-500 transform group hover:-translate-y-2 hover:shadow-2xl w-full relative overflow-hidden"
+                             :class="activeIndex === {{ loop.index0 }} ? 'border-primary/30 ring-4 ring-primary/5 shadow-2xl bg-white' : 'border-transparent'">
+                            
+                            <div class="absolute w-32 h-32 bg-primary/5 -z-10 transition-transform duration-700 group-hover:scale-125 {{ item.shape }}"
+                                 :class="activeIndex === {{ loop.index0 }} ? 'scale-125' : ''"></div>
+                            
+                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-500"
+                                 :class="activeIndex === {{ loop.index0 }} ? 'bg-primary text-white shadow-lg' : 'bg-primary/10 text-primary'">
+                                {{ item.icon|raw }}
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-bold font-display text-text-main mb-3">{{ item.title }}</h3>
+                            <p class="text-muted text-base md:text-lg font-medium leading-relaxed">{{ item.desc }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {# Tarjeta extra: Vehículos de Práctica #}
+                <div class="transition-all duration-700 ease-in-out w-full"
+                     :class="activeIndex === {{ specialties|length }} ? 'opacity-100 translate-y-0 scale-100 relative z-10' : 'opacity-0 translate-y-8 scale-95 absolute inset-0 z-0 pointer-events-none'">
+                    
+                    <div class="bg-surface rounded-3xl p-8 md:p-12 shadow-float border transition-all duration-500 transform group hover:-translate-y-2 hover:shadow-2xl w-full relative overflow-hidden"
+                         :class="activeIndex === {{ specialties|length }} ? 'border-primary/40 ring-4 ring-primary/5 bg-white' : 'border-transparent'">
+                        
+                        <div class="w-20 h-20 rounded-3xl flex items-center justify-center mb-6 text-white shadow-xl transition-all duration-500"
+                             :class="activeIndex === {{ specialties|length }} ? 'bg-primary shadow-primary/40 rotate-0' : 'bg-gray-400 -rotate-6'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                        </div>
+                        
+                        <h3 class="text-3xl md:text-4xl font-bold font-display text-text-main mb-4">Vehículos de Práctica</h3>
+                        <p class="text-muted font-medium text-lg md:text-xl leading-relaxed">
+                            Nuestra moderna y segura flota de vehículos está equipada con doble comando y tecnología actual para tu práctica de conducción en el mundo real, guiado siempre por expertos.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {# Indicador visual de "sigue haciendo scroll" solo en MÓVIL #}
+        <div class="md:hidden flex flex-col items-center mt-8 opacity-60"
+             :class="activeIndex >= totalSteps - 1 ? 'opacity-0' : 'opacity-60'">
+            <span class="text-xs text-muted mb-1">Desliza para ver más</span>
+            <svg class="w-5 h-5 text-muted animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </div>
+
+    </div>{# /sticky #}
+</section>
+
+<script>
+function specialtiesSpy() {
+    return {
+        activeIndex: 0,
+        lineProgress: 5,
+        totalSteps: {{ totalSteps }},
+        
+        updateScroll() {
+            const container = this.$refs.routeContainer;
+            if (!container) return;
+            
+            const rect = container.getBoundingClientRect();
+            const sectionHeight = container.offsetHeight;
+            const scrolledIntoSection = -rect.top;
+            
+            if (scrolledIntoSection < 0) {
+                // Aún no hemos llegado a la sección
+                this.activeIndex = 0;
+                this.lineProgress = 5;
+                return;
+            }
+            
+            // Cada "paso" tiene un tamaño de (sectionHeight / totalSteps)
+            const stepHeight = sectionHeight / this.totalSteps;
+            const rawIndex = Math.floor(scrolledIntoSection / stepHeight);
+            this.activeIndex = Math.max(0, Math.min(this.totalSteps - 1, rawIndex));
+            
+            // Progreso de la línea: de 0 a 100% basado en el activeIndex
+            this.lineProgress = Math.min(100, ((this.activeIndex + 1) / this.totalSteps) * 100);
+        },
+        
+        goTo(index) {
+            // Al hacer click en un tab, scrollear al "tramo" correspondiente de la sección
+            const container = this.$refs.routeContainer;
+            if (!container) return;
+            
+            const sectionTop = container.getBoundingClientRect().top + window.pageYOffset;
+            const stepHeight = container.offsetHeight / this.totalSteps;
+            const targetScroll = sectionTop + (stepHeight * index) + 10; // +10px de margen
+            
+            window.scrollTo({
+                top: targetScroll,
+                behavior: 'smooth'
+            });
+        }
+    }
+}
+</script>
