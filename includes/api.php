@@ -73,7 +73,7 @@ function abc_setup_resend_smtp( $phpmailer ) {
     
     // Credenciales de Resend
     $phpmailer->Username   = 'resend';
-    $phpmailer->Password   = 're_7DVdwvct_un1JTuUJsMoeqZFs1T6HYY3J'; 
+    $phpmailer->Password   = RESEND_API_KEY;
     
     $phpmailer->From       = 'contacto@notificaciones.abcconduccion.cl'; 
     $phpmailer->FromName   = 'ABC Escuela de Conductores';
