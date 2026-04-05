@@ -16,3 +16,4 @@ Timber\Timber::init();
 require_once __DIR__ . '/includes/timber.php';
 require_once __DIR__ . '/includes/setup.php';
 require_once __DIR__ . '/includes/cpt.php';
+require_once __DIR__ . '/includes/api.php';

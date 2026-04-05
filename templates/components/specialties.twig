@@ -3,13 +3,13 @@
 {% set specialties = [
     {
         title: 'Material Didáctico',
-        desc: 'Guías de estudio actualizadas y manuales completos diseñados pedagógicamente para facilitar tu aprendizaje teórico.',
+        desc: 'Guías de estudio actualizadas y manuales del conductor completos diseñados pedagógicamente para facilitar tu aprendizaje teórico.',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>',
         shape: 'rounded-bl-full top-0 right-0'
     },
     {
         title: 'Ensayos Psicotécnicos',
-        desc: 'Preparación en nuestro laboratorio psicotécnico con equipos certificados para evaluar tus reflejos y coordinación.',
+        desc: 'Contamos con un laboratorio psicotécnico con máquinas especiales, pruebas iguales a las sometidas en el examen municipal. Están a disposición de los alumnos durante todo el día para que puedan practicar.',
         icon: '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
         shape: 'rounded-br-full top-0 left-0'
     },
@@ -29,13 +29,6 @@
 
 {% set totalSteps = specialties|length + 1 %}
 
-{# 
-    SCROLL-HIJACK: La sección ocupa (totalSteps * 100vh) de alto,
-    pero todo el contenido visual queda fijo con sticky.
-    Al hacer scroll "dentro" de este espacio fantasma, 
-    solo cambia la tarjeta activa y baja el ícono.
-#}
-{# Title Header — fuera del hijack, scrollea normalmente #}
 <div class="text-center py-16 max-w-2xl mx-auto relative z-10 px-4"
      x-data="{ shown: false }"
      @scroll.window="if(!shown && $el.getBoundingClientRect().top < (window.innerHeight * 0.8)) shown = true">
@@ -61,7 +54,6 @@
          @scroll.window="updateScroll()"
          :style="'height: ' + totalSteps * 60 + 'vh'">
 
-    {# Solo tabs+tarjetas quedan sticky, el título ya se fue #}
     <div class="sticky top-[80px] min-h-[calc(100vh-80px)] flex items-center py-8 overflow-hidden">
 
         {# Layout Dividido #}
@@ -111,11 +103,10 @@
             </div>
 
             {# ======================= #}
-            {# COLUMNA DERECHA (Tarjeta activa, cambia en el mismo lugar) #}
+            {# COLUMNA DERECHA
             {# ======================= #}
             <div class="w-full md:w-2/3 relative" style="min-height: 320px;">
                 
-                {# Cada tarjeta se muestra/oculta con transición en EL MISMO espacio #}
                 {% for item in specialties %}
                     <div class="transition-all duration-700 ease-in-out w-full"
                          :class="activeIndex === {{ loop.index0 }} ? 'opacity-100 translate-y-0 scale-100 relative z-10' : 'opacity-0 translate-y-8 scale-95 absolute inset-0 z-0 pointer-events-none'">

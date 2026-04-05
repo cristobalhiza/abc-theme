@@ -36,7 +36,7 @@
 
 @layer base {
   body {
-    @apply bg-background-light text-text-main font-body antialiased;
+    @apply bg-background text-text font-body antialiased;
   }
 }
 
