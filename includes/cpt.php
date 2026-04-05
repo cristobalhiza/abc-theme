@@ -45,9 +45,7 @@ function abc_attach_curso_meta() {
             Field::make( 'file', 'abc_resolucion_pdf', 'PDF de la Resolución' )
                 ->set_value_type( 'url' )
                 ->set_width( 25 ),
-            Field::make( 'file', 'abc_pdf_requisitos', 'PDF de Requisitos' )
-                ->set_value_type( 'url' )
-                ->set_width( 25 ),
+            Field::make( 'rich_text', 'abc_requisitos', 'Requisitos del Curso' ),
             Field::make( 'complex', 'abc_descargas', 'Archivos de Descarga Adicionales' )
                 ->set_layout( 'tabbed-horizontal' )
                 ->add_fields( array(
