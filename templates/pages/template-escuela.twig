@@ -362,14 +362,13 @@
             radius: 48,
             maxW: 60,
             contentOpacity: 0,
-            ticking: false, // Controla si se pidió animación frame
+            ticking: false, 
 
             init() {
                 this.updateContext = this.updateContext.bind(this);
                 this.handleScroll = this.handleScroll.bind(this);
                 
                 window.addEventListener('scroll', this.handleScroll, { passive: true });
-                // Disparo inicial
                 this.updateContext();
             },
 
