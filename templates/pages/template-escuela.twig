@@ -3,161 +3,409 @@
 {% block content %}
 <main class="relative pt-20 overflow-hidden">
     {# SVG Decorativo Central #}
-    <div aria-hidden="true" class="absolute inset-x-0 top-0 h-[1000px] pointer-events-none z-0 overflow-hidden">
-        <svg class="w-full h-full opacity-5" preserveAspectRatio="none" viewBox="0 0 1440 3000">
-            <path d="M720 0 C720 400 100 600 100 1000 S1340 1400 1340 2000 S720 2400 720 3000" fill="none" stroke="currentColor" stroke-width="40" class="text-primary"></path>
-            <path d="M720 0 C720 400 100 600 100 1000 S1340 1400 1340 2000 S720 2400 720 3000" fill="none" stroke="white" stroke-dasharray="30,30" stroke-width="2"></path>
-        </svg>
+    <div aria-hidden="true" class="absolute inset-x-0 top-0 pointer-events-none z-0" 
+         x-data="{ pathRevealed: false }" 
+         x-init="setTimeout(() => pathRevealed = true, 150)">
+        
+        {# Capa de enmascaramiento con transición de altura #}
+        <div class="w-full overflow-hidden transition-all duration-[2000ms] ease-out"
+             :style="pathRevealed ? 'max-height: 940px;' : 'max-height: 0px;'">
+            
+            {# El contenedor interior mantiene el tamaño fijo del SVG para que simplemente sea "descubierto" #}
+            <div class="h-[940px] w-full">
+                <svg class="w-full h-full opacity-15" preserveAspectRatio="none" viewBox="0 0 1440 3000">
+                    <path d="M720 0 C720 400 100 600 100 1000 S1340 1400 1340 2000 S720 2400 720 3000" fill="none" stroke="currentColor" stroke-width="40" class="text-primary"></path>
+                    <path d="M720 0 C720 400 100 600 100 1000 S1340 1400 1340 2000 S720 2400 720 3000" fill="none" stroke="white" stroke-dasharray="30,30" stroke-width="2"></path>
+                </svg>
+            </div>
+        </div>
     </div>
 
-    {# Sección Hero #}
-    <section class="relative z-10 max-w-7xl mx-auto px-6 py-24">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
+    {# ─── Hero ─── #}
+    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div>
-                <h1 class="font-display text-5xl md:text-7xl font-bold text-text-main leading-tight tracking-tight mb-8">
+                <h1 class="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-text-main leading-tight tracking-tight mb-4 md:mb-8">
                     Nuestra <span class="text-primary italic">Escuela</span>
                 </h1>
-                <p class="text-xl text-muted leading-relaxed font-medium">
+                <p class="text-base sm:text-xl text-secondary-text leading-relaxed font-medium">
                     Somos una empresa familiar con una estructura dinámica y flexible, comprometida con la formación de conductores de excelencia en Santiago desde hace más de dos décadas.
                 </p>
             </div>
-            
             <div class="relative group">
                 <div class="absolute -inset-4 bg-primary/10 rounded-[32px] blur-xl transition duration-500 group-hover:bg-primary/20"></div>
-                <div class="relative rounded-[32px] overflow-hidden shadow-float">
-                    <img alt="Recepción de la Academia ABC" class="w-full aspect-video object-cover transition-transform duration-700 hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh29vs99xRfLQPQUL_qv5NSG_KrtS9hCUL_ssSS_kus4m50pksGk3UOfs4JqLICp6dR535GoMUovK4SbpM8uJHjSvhxzIQlHd_bFxMSDRBI5tjlAOjei3eq6wvng11E3MNudIJYtO0KSJNf2pH7qG84tM7q6gTIqhz0Unl108pRvX-iUAlDNy22riFKNFq7JWw3XBL7Ce-z8vgBMmtvsLjXN6_0e6gHLGjFIsDEdr03g-P2pSxaqegHbORzN3wjo_maRr9O8UVjqU"/>
+                <div class="relative rounded-2xl md:rounded-[32px] overflow-hidden shadow-float">
+                    <img alt="Recepción de la Academia ABC" class="w-full aspect-video object-cover transition-transform duration-700 hover:scale-105" src="{{ theme.link }}/assets/images/abcconduccion-escuela-conductores-recepcion.webp"/>
                 </div>
             </div>
         </div>
     </section>
 
-    {# Sección de Línea de Tiempo #}
-    <section class="relative z-10 max-w-7xl mx-auto px-6 py-24">
-        <div class="flex flex-col items-center mb-16">
-            <span class="bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs px-4 py-1.5 rounded-full mb-4">Trayectoria</span>
-            <h2 class="font-display font-bold text-4xl md:text-5xl text-center text-text-main">Nuestra Historia en Movimiento</h2>
+    {# ─── Línea de Tiempo ─── #}
+    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-18 overflow-hidden">
+        <div class="flex flex-col items-center mb-8 md:mb-16">
+            <span class="bg-blue-50 text-blue-600 font-bold uppercase tracking-widest text-xs px-4 py-1.5 rounded-full mb-3 md:mb-4">Trayectoria</span>
+            <h2 class="font-display font-bold text-3xl md:text-5xl text-center text-slate-900">Nuestra Historia en Movimiento</h2>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {# Hito 1 #}
-            <div class="bg-white p-8 rounded-[24px] shadow-float border border-primary/5 hover:-translate-y-2 transition-transform duration-300">
-                <span class="text-primary font-display font-black text-4xl block mb-4">2001</span>
-                <h3 class="font-display font-bold text-xl text-text-main mb-2">Fundación</h3>
-                <p class="text-muted text-sm font-medium">Inicio de actividades en Agosto de 2001, naciendo como un proyecto familiar enfocado en seguridad vial.</p>
-                <div class="mt-6 flex items-center gap-2 text-primary">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/></svg>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Hito Cero</span>
+        {# ── Mobile: Grid estático de 2 columnas ── #}
+        <div class="grid grid-cols-2 gap-3 md:hidden">
+            {% set hitos = [
+                { year: '2001', title: 'Fundación', desc: 'Inicio de actividades en Agosto de 2001, naciendo como un proyecto familiar enfocado en seguridad vial.', label: 'Hito Cero', color: '#0072b1', icon: 'flag' },
+                { year: '2006', title: 'Gestión de Calidad', desc: 'Implementación exitosa del Sistema de Gestión de Calidad (SGC) en todos nuestros procesos internos.', label: 'Calidad Total', color: '#ff6b35', icon: 'check' },
+                { year: '2007', title: 'Certificaciones', desc: 'Certificación BVQI y aprobación oficial de SENCE/OTEC para capacitación técnica.', label: 'Validación', color: '#0072b1', icon: 'doc' },
+                { year: '2009', title: 'Consolidación ISO', desc: 'Obtención de certificación ISO 9001:2008 y NCh 2728, elevando nuestros estándares.', label: 'Norma Internacional', color: '#ff6b35', icon: 'star' },
+                { year: '2017', title: 'Especialización', desc: 'Transición exitosa a la norma NCh 2728:2015, enfocándonos en requerimientos del MTT y SENCE.', label: 'Enfoque Sectorial', color: '#0072b1', icon: 'bolt' },
+                { year: '2021', title: 'Era Digital', desc: 'Autorización MTT y SENCE para impartir cursos en modalidad E-Learning Sincrónico.', label: 'Innovación', color: '#ff6b35', icon: 'screen' }
+            ] %}
+            {% for h in hitos %}
+            <div class="bg-white p-4 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.04)] flex flex-col">
+                <span class="text-[{{ h.color }}] font-display font-black text-2xl block mb-1">{{ h.year }}</span>
+                <h3 class="font-display font-bold text-sm text-slate-900 mb-1">{{ h.title }}</h3>
+                <p class="text-slate-500 text-xs font-medium grow leading-snug">{{ h.desc }}</p>
+                <div class="mt-3 flex items-center gap-1.5 text-[{{ h.color }}]">
+                    <span class="w-3 h-3 rounded-full bg-current opacity-40"></span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest">{{ h.label }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {# ── Desktop: Slider continuo con arrastre ── #}
+        <div x-data="continuousSlider()"
+             x-init="init()"
+             @mouseenter="slowDown()"
+             @mouseleave="speedUp()"
+             class="relative group w-full overflow-hidden select-none hidden md:block">
+
+            <div x-ref="track"
+                 @mousedown="dragStart($event)"
+                 @mousemove="dragMove($event)"
+                 @mouseup="dragEnd()"
+                 @touchstart.passive="dragStart($event)"
+                 @touchmove.passive="dragMove($event)"
+                 @touchend="dragEnd()"
+                 class="flex gap-6 w-max py-4 cursor-grab will-change-transform"
+                 style="touch-action: pan-y;">
+
+                {# Hito 1 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2001</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Fundación</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Inicio de actividades en Agosto de 2001, naciendo como un proyecto familiar enfocado en seguridad vial.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#0072b1]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Hito Cero</span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hito 2 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2006</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Gestión de Calidad</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Implementación exitosa del Sistema de Gestión de Calidad (SGC) en todos nuestros procesos internos.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#ff6b35]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Calidad Total</span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hito 3 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2007</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Certificaciones</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Certificación BVQI y aprobación oficial de SENCE/OTEC para capacitación técnica.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#0072b1]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Validación</span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hito 4 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2009</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Consolidación ISO</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Obtención de certificación ISO 9001:2008 y NCh 2728, elevando nuestros estándares.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#ff6b35]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 01.832.445l3.208 4.811 5.626.818a1 1 0 01.554 1.706l-4.07 3.967.961 5.603a1 1 0 01-1.45 1.054L10 17.76l-5.061 2.645a1 1 0 01-1.45-1.054l.961-5.603-4.07-3.966a1 1 0 01.554-1.706l5.626-.818 3.208-4.811A1 1 0 0110 2z" clip-rule="evenodd"/></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Norma Internacional</span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hito 5 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2017</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Especialización</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Transición exitosa a la norma NCh 2728:2015, enfocándonos en requerimientos del MTT y SENCE.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#0072b1]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Enfoque Sectorial</span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hito 6 #}
+                <div class="w-[380px] shrink-0 pointer-events-none">
+                    <div class="bg-white p-8 rounded-4xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] h-full flex flex-col pointer-events-auto">
+                        <span class="text-[#0072b1] font-display font-black text-4xl block mb-4">2021</span>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Era Digital</h3>
+                        <p class="text-slate-500 text-sm font-medium grow">Autorización MTT y SENCE para impartir cursos en modalidad E-Learning Sincrónico.</p>
+                        <div class="mt-8 flex items-center gap-2 text-[#ff6b35]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Innovación</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {# Hito 2 #}
-            <div class="bg-white p-8 rounded-[24px] shadow-float border border-primary/5 hover:-translate-y-2 transition-transform duration-300 mt-8 md:mt-0">
-                <span class="text-primary font-display font-black text-4xl block mb-4">2006</span>
-                <h3 class="font-display font-bold text-xl text-text-main mb-2">Gestión de Calidad</h3>
-                <p class="text-muted text-sm font-medium">Implementación exitosa del Sistema de Gestión de Calidad (SGC) en todos nuestros procesos internos.</p>
-                <div class="mt-6 flex items-center gap-2 text-accent">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Calidad Total</span>
-                </div>
-            </div>
-
-            {# Hito 3 #}
-            <div class="bg-white p-8 rounded-[24px] shadow-float border border-primary/5 hover:-translate-y-2 transition-transform duration-300">
-                <span class="text-primary font-display font-black text-4xl block mb-4">2007</span>
-                <h3 class="font-display font-bold text-xl text-text-main mb-2">Certificaciones</h3>
-                <p class="text-muted text-sm font-medium">Certificación BVQI y aprobación oficial de SENCE/OTEC para capacitación técnica.</p>
-                <div class="mt-6 flex items-center gap-2 text-primary">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Validación</span>
-                </div>
-            </div>
-
-            {# Hito 4 #}
-            <div class="bg-white p-8 rounded-[24px] shadow-float border border-primary/5 hover:-translate-y-2 transition-transform duration-300 mt-8 md:mt-0">
-                <span class="text-primary font-display font-black text-4xl block mb-4">2009</span>
-                <h3 class="font-display font-bold text-xl text-text-main mb-2">Consolidación ISO</h3>
-                <p class="text-muted text-sm font-medium">Obtención de certificación ISO 9001:2008 y NCh 2728, elevando nuestros estándares.</p>
-                <div class="mt-6 flex items-center gap-2 text-accent">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a1 1 0 01.832.445l3.208 4.811 5.626.818a1 1 0 01.554 1.706l-4.07 3.967.961 5.603a1 1 0 01-1.45 1.054L10 17.76l-5.061 2.645a1 1 0 01-1.45-1.054l.961-5.603-4.07-3.966a1 1 0 01.554-1.706l5.626-.818 3.208-4.811A1 1 0 0110 2z" clip-rule="evenodd"/></svg>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Norma Internacional</span>
-                </div>
-            </div>
+            {# Degradados laterales #}
+            <div class="absolute inset-y-0 left-0 w-32 bg-linear-to-r from-[#f8fafc] to-transparent pointer-events-none"></div>
+            <div class="absolute inset-y-0 right-0 w-32 bg-linear-to-l from-[#f8fafc] to-transparent pointer-events-none"></div>
         </div>
     </section>
 
-    {# Misión y Visión #}
-    <section class="relative z-10 max-w-7xl mx-auto px-6 py-24">
-        <div class="grid lg:grid-cols-12 gap-8">
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('continuousSlider', () => ({
+            position: 0,
+            baseSpeed: 0.85,
+            hoverSpeed: 0.15,
+            currentSpeed: 0.85,
+            isDragging: false,
+            startX: 0,
+            startPos: 0,
+            singleSetWidth: 0,
+            animationFrame: null,
+
+            init() {
+                const track = this.$refs.track;
+                const content = track.innerHTML;
+                track.innerHTML = content + content + content;
+
+                this.$nextTick(() => {
+                    this.singleSetWidth = track.scrollWidth / 3;
+                    this.animate();
+                });
+            },
+
+            destroy() {
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                }
+            },
+
+            animate() {
+                if (!this.isDragging) {
+                    this.position += this.currentSpeed;
+                }
+                if (this.singleSetWidth > 0) {
+                    this.position = ((this.position % this.singleSetWidth) + this.singleSetWidth) % this.singleSetWidth;
+                }
+                this.$refs.track.style.transform = `translate3d(-${this.position}px, 0, 0)`;
+                this.animationFrame = requestAnimationFrame(() => this.animate());
+            },
+
+            slowDown() { this.currentSpeed = this.hoverSpeed; },
+            speedUp() { this.currentSpeed = this.baseSpeed; this.isDragging = false; },
+
+            dragStart(e) {
+                this.isDragging = true;
+                this.startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+                this.startPos = this.position;
+                this.$refs.track.style.cursor = 'grabbing';
+            },
+            dragMove(e) {
+                if (!this.isDragging) return;
+                const pageX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+                this.position = this.startPos + (this.startX - pageX);
+            },
+            dragEnd() {
+                this.isDragging = false;
+                this.$refs.track.style.cursor = 'grab';
+            }
+        }))
+    });
+    </script>
+
+    {# ─── Misión y Visión ─── #}
+    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-24">
+        <div class="grid lg:grid-cols-12 gap-4 md:gap-8">
             {# Tarjeta Misión #}
-            <div class="lg:col-span-7 bg-white p-10 md:p-14 rounded-[32px] shadow-float relative overflow-hidden group border border-primary/5">
-                <div class="absolute top-0 right-0 p-8 opacity-5 text-primary">
+            <div class="lg:col-span-7 bg-white p-6 sm:p-8 md:p-14 rounded-2xl md:rounded-[32px] shadow-float relative overflow-hidden group border border-primary/5">
+                <div class="absolute top-0 right-0 p-8 opacity-5 text-primary hidden md:block">
                     <svg class="w-48 h-48" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zM5.5 10a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0z" clip-rule="evenodd"/></svg>
                 </div>
-                <span class="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-8">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span class="inline-flex items-center gap-2 bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest px-3 py-1 md:px-4 md:py-1.5 rounded-full mb-4 md:mb-8">
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     Nuestra Misión
                 </span>
-                <h3 class="font-display font-bold text-3xl md:text-4xl mb-6 text-text-main leading-tight">Capacitación con <br/><span class="text-primary">Estándares de Excelencia</span></h3>
-                <p class="text-lg text-muted leading-relaxed font-medium">
+                <h3 class="font-display font-bold text-2xl sm:text-3xl md:text-4xl mb-3 md:mb-6 text-text-main leading-tight">Capacitación con <br/><span class="text-primary">Estándares de Excelencia</span></h3>
+                <p class="text-base md:text-lg text-muted leading-relaxed font-medium">
                     "Garantizar que nuestros programas de entrenamiento y capacitación en conducción de vehículos cumplan los requerimientos del MTT y se desarrollen en un ambiente seguro garantizando altos estándares de calidad, eficiencia y competitividad requeridos por nuestros usuarios."
                 </p>
             </div>
 
             {# Tarjeta Imagen 1 #}
-            <div class="lg:col-span-5 rounded-[32px] overflow-hidden h-80 lg:h-auto shadow-float">
-                <img alt="Clases prácticas" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDjJ5vjA5CfVoUh49rUau2J0_4TeeKEfWT3KA3s4_sk0KHQnVmsmu5tIMdMssFE1bHjxJdwdowc6n3B3aeq9w1pLXHZYky5bo4YKUBLCgbobCPzQLYUf268oKANhZOFcuRUJAnT6es8bLdGdms7OZQceAbJ6DXP7QrpKrFWvOEsXxsAolEHSs8tpPP_7kZP6PU2uB-l2wxeL9DSTy6Lz-8Pex18z0L6rfgUzds2yjgcxC-TUByHATuz0Pgjo6_GNUDlehv_53omvs"/>
+            <div class="lg:col-span-5 rounded-2xl md:rounded-[32px] overflow-hidden h-48 sm:h-64 lg:h-auto shadow-float">
+                <img alt="Clases prácticas" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" src="{{ theme.link }}/assets/images/foto-abcconduccion-academia-conduccion_010.webp"/>
             </div>
 
             {# Tarjeta Imagen 2 #}
-            <div class="lg:col-span-4 rounded-[32px] overflow-hidden h-80 lg:h-auto shadow-float">
-                <img alt="Entrenamiento profesional" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzoKM17YEH5lu-IkmGdyhZkf6JPQH7eO5A1rf-sf7sNf0nC7p-liBEeieVDW-B4XYbv0OFUTKie-y9a5NJa79MjvefZaiI0wlbeL0ISNnFMpwydklY0f2uSsMLE2vWeWyRLrL23F6-Zxw3f6mvj-5kuBD1za2NMripMHhREbqEPHNaMGzevRk_6cZcz335jJrYM_1d6_KKhPteE2H5bya8Vva6_LLIrrvdkFxZhJvA-1Pr3nNKf_H3vxTZwkone7htiHbZUDr3ymM"/>
+            <div class="lg:col-span-4 rounded-2xl md:rounded-[32px] overflow-hidden h-48 sm:h-64 lg:h-auto shadow-float">
+                <img alt="Entrenamiento profesional" class="w-full h-full object-cover transition-transform duration-700 hover:scale-110" src="{{ theme.link }}/assets/images/abcconduccion-ilustration-01.webp"/>
             </div>
 
             {# Tarjeta Visión #}
-            <div class="lg:col-span-8 bg-gradient-to-br from-primary to-[#0d2a45] text-white p-10 md:p-14 rounded-[32px] shadow-xl relative overflow-hidden group">
+            <div class="lg:col-span-8 bg-gradient-to-br from-primary to-[#0d2a45] text-white p-6 sm:p-8 md:p-14 rounded-2xl md:rounded-[32px] shadow-xl relative overflow-hidden group">
                 <div class="absolute inset-0 opacity-10 road-line rotate-2 skew-x-12 scale-150"></div>
-                <div class="absolute bottom-0 right-0 p-8 opacity-10">
+                <div class="absolute bottom-0 right-0 p-8 opacity-10 hidden md:block">
                     <svg class="w-48 h-48" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
                 </div>
-                <span class="relative z-10 inline-flex items-center gap-2 bg-white/10 text-white font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-8 shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                <span class="relative z-10 inline-flex items-center gap-2 bg-white/10 text-white font-bold text-xs uppercase tracking-widest px-3 py-1 md:px-4 md:py-1.5 rounded-full mb-4 md:mb-8 shadow-sm">
+                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     Nuestra Visión
                 </span>
-                <h3 class="relative z-10 font-display font-bold text-3xl md:text-4xl mb-6 leading-tight">Liderazgo en <br/><span class="text-accent">Responsabilidad Vial</span></h3>
-                <p class="relative z-10 text-lg text-white/90 leading-relaxed font-medium">
+                <h3 class="relative z-10 font-display font-bold text-2xl sm:text-3xl md:text-4xl mb-3 md:mb-6 leading-tight">Liderazgo en <br/><span class="text-accent">Responsabilidad Vial</span></h3>
+                <p class="relative z-10 text-base md:text-lg text-white/90 leading-relaxed font-medium">
                     "Asegurar que los profesionales de la conducción alcancen una cultura de conducción socialmente responsable y convertirnos en una empresa líder en la capacitación de conductores de vehículos de transporte público y en temas referentes a tránsito y transporte en Santiago."
                 </p>
             </div>
         </div>
     </section>
 
-    {# Call to Action #}
-    <section class="relative z-10 max-w-7xl mx-auto px-6 py-24 text-center">
-        <div class="bg-primary rounded-[32px] p-16 relative overflow-hidden shadow-2xl">
-            {# Patrón Animado #}
-            <div class="absolute inset-0 opacity-10 pointer-events-none">
-                <svg fill="none" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
-                    <pattern height="40" id="grid" patternUnits="userSpaceOnUse" width="40">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"></path>
-                    </pattern>
-                    <rect fill="url(#grid)" height="100%" width="100%"></rect>
-                </svg>
+    {# ─── Modalidades y Convenios ─── #}
+    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6">
+        <div class="grid md:grid-cols-2 gap-4 md:gap-8">
+            {# Modalidades de Estudio #}
+            <div class="bg-secondary/5 backdrop-blur-sm border border-primary/10 rounded-2xl md:rounded-4xl p-5 sm:p-6 md:p-10 flex flex-row gap-4 md:gap-8 items-start md:items-center">
+                <div class="bg-primary text-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-lg shadow-primary/20 shrink-0">
+                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-lg md:text-2xl text-text-main mb-1 md:mb-2">Flexibilidad de Aprendizaje</h4>
+                    <p class="text-secondary-text text-sm md:text-md leading-relaxed">
+                        Nuestros cursos Clase B y Profesionales (A2, A4) se adaptan a tu ritmo con modalidades <span class="text-primary font-bold">Sincrónicas (Online en vivo)</span> y <span class="text-primary font-bold">Presenciales</span>.
+                    </p>
+                </div>
             </div>
-            
-            <h2 class="font-display font-bold text-4xl md:text-5xl text-white mb-8 relative z-10">¿Listo para tomar el volante?</h2>
-            <p class="text-white/80 text-xl max-w-2xl mx-auto mb-12 relative z-10 font-medium">
-                Únete a los miles de conductores profesionales certificados por la escuela líder en Santiago.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
-                <a href="{{ site.url }}#courses" class="inline-flex items-center justify-center bg-accent text-white px-8 h-14 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg shadow-accent/30 uppercase tracking-widest gap-2">
-                    Nuestros Cursos
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
-                <a href="{{ site.url }}#contacto" class="inline-flex items-center justify-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 h-14 rounded-xl font-bold hover:bg-white/20 transition-all uppercase tracking-widest gap-2">
-                    Contáctanos
-                </a>
+
+            {# Convenios Institucionales #}
+            <div class="bg-secondary/5 backdrop-blur-sm border border-primary/10 rounded-2xl md:rounded-4xl p-5 sm:p-6 md:p-10 flex flex-row gap-4 md:gap-8 items-start md:items-center">
+                <div class="bg-accent text-white p-3 md:p-4 rounded-xl md:rounded-2xl shadow-lg shadow-accent/20 shrink-0">
+                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-7h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-lg md:text-2xl text-text-main mb-1 md:mb-2">Alianzas Corporativas</h4>
+                    <p class="text-secondary-text text-sm md:text-md leading-relaxed">
+                        Desarrollamos convenios a medida con <span class="text-accent font-bold">empresas, centros educativos e instituciones públicas</span> para adecuar la formación a sus necesidades específicas.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
+
+    {# ─── Call to Action (Scroll-Zoom) ─── #}
+    <section x-data="ctaZoom()" x-ref="ctaSection" class="relative z-10 w-full py-12 md:py-24">
+        <div x-ref="ctaCard"
+             class="bg-primary relative overflow-hidden shadow-2xl text-center will-change-transform origin-center mx-auto"
+             :style="`
+                transform: scale(${scale});
+                border-radius: ${radius}px;
+                max-width: ${maxW}%;
+             `">
+
+            {# Patrón Decorativo #}
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <svg fill="none" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+                    <pattern height="40" id="grid-escuela" patternUnits="userSpaceOnUse" width="40">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"></path>
+                    </pattern>
+                    <rect fill="url(#grid-escuela)" height="100%" width="100%"></rect>
+                </svg>
+            </div>
+
+            <div class="p-8 sm:p-10 md:p-16 lg:p-20" :style="`opacity: ${contentOpacity}`">
+                <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-4 md:mb-8 relative z-10">¿Listo para tomar el volante?</h2>
+                <p class="text-white/80 text-base sm:text-xl max-w-2xl mx-auto mb-6 md:mb-12 relative z-10 font-medium">
+                    Únete a los miles de conductores profesionales certificados por la escuela líder en Santiago.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center relative z-10">
+                    <a href="{{ site.url }}#courses" class="inline-flex items-center justify-center bg-accent text-white px-6 sm:px-8 h-12 sm:h-14 rounded-xl font-bold hover:brightness-110 transition-all shadow-lg shadow-accent/30 uppercase tracking-widest gap-2 text-sm sm:text-base">
+                        Nuestros Cursos
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                    <a href="{{ site.url }}#contacto" class="inline-flex items-center justify-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 sm:px-8 h-12 sm:h-14 rounded-xl font-bold hover:bg-white/20 transition-all uppercase tracking-widest gap-2 text-sm sm:text-base">
+                        Contáctanos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('ctaZoom', () => ({
+            scale: 0.55,
+            radius: 48,
+            maxW: 60,
+            contentOpacity: 0,
+            ticking: false, // Controla si se pidió animación frame
+
+            init() {
+                this.updateContext = this.updateContext.bind(this);
+                this.handleScroll = this.handleScroll.bind(this);
+                
+                window.addEventListener('scroll', this.handleScroll, { passive: true });
+                // Disparo inicial
+                this.updateContext();
+            },
+
+            destroy() {
+                window.removeEventListener('scroll', this.handleScroll);
+            },
+
+            handleScroll() {
+                if (!this.ticking) {
+                    requestAnimationFrame(() => {
+                        this.updateContext();
+                        this.ticking = false;
+                    });
+                    this.ticking = true;
+                }
+            },
+
+            updateContext() {
+                const section = this.$refs.ctaSection;
+                if (!section) return;
+
+                const rect = section.getBoundingClientRect();
+                const vh = window.innerHeight;
+
+                const rawProgress = 1 - (rect.top / vh);
+                const progress = Math.min(1, Math.max(0, rawProgress));
+
+                const eased = 1 - Math.pow(1 - progress, 4);
+
+                this.scale      = 0.55 + (eased * 0.45);
+                this.radius     = 48 - (eased * 48);
+                this.maxW       = 60 + (eased * 40);
+                this.contentOpacity = eased;
+            }
+        }));
+    });
+    </script>
 </main>
 {% endblock %}
