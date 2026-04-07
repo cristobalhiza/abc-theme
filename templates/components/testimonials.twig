@@ -38,39 +38,99 @@
             <div class="bg-surface rounded-[40px] p-8 md:p-12 shadow-float border border-gray-100 relative">
                 <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
                     <div>
-                        <h3 class="text-3xl font-bold font-display text-text-main mb-2">Nuevos Conductores</h3>
+                        <h3 class="text-3xl font-bold font-display text-text-main mb-2">Nuevos Conductores de <span class="text-primary">ABC Conducción</span></h3>
                         <p class="text-muted font-medium">Alumnos que ya superaron con éxito su examen municipal.</p>
                     </div>
                 </div>
 
                 <div x-data="{ 
-                        scrollNext() { this.$refs.slider.scrollBy({ left: 300, behavior: 'smooth' }); },
-                        scrollPrev() { this.$refs.slider.scrollBy({ left: -300, behavior: 'smooth' }); }
+                        activeIndex: 0,
+                        total: {{ fotos_alumnos|length }},
+                        autoScrollInterval: null,
+                        init() {
+                            this.startAutoScroll();
+                            this.$refs.slider.addEventListener('scroll', () => {
+                                if (!this.$refs.slider.children.length) return;
+                                const item = this.$refs.slider.children[0];
+                                const itemWidth = item.offsetWidth + 24; 
+                                if (itemWidth > 0) {
+                                    this.activeIndex = Math.round(this.$refs.slider.scrollLeft / itemWidth);
+                                }
+                            });
+                        },
+                        scrollNext() { 
+                            const slider = this.$refs.slider;
+                            if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 10) {
+                                this.scrollTo(0);
+                            } else {
+                                let next = this.activeIndex + 1;
+                                if (next >= this.total) next = 0;
+                                this.scrollTo(next);
+                            }
+                        },
+                        scrollPrev() { 
+                            let prev = this.activeIndex - 1;
+                            if (prev < 0) prev = this.total - 1;
+                            this.scrollTo(prev);
+                        },
+                        scrollTo(index) {
+                            if (index < 0 || index >= this.total) return;
+                            const item = this.$refs.slider.children[index];
+                            if (item) {
+                                this.$refs.slider.scrollTo({ 
+                                    left: item.offsetLeft - this.$refs.slider.children[0].offsetLeft, 
+                                    behavior: 'smooth' 
+                                });
+                            }
+                        },
+                        startAutoScroll() {
+                            this.autoScrollInterval = setInterval(() => {
+                                this.scrollNext();
+                            }, 3000);
+                        },
+                        stopAutoScroll() {
+                            if (this.autoScrollInterval) clearInterval(this.autoScrollInterval);
+                        }
                     }" 
-                    class="relative group">
+                    @touchstart="stopAutoScroll"
+                    @touchend="startAutoScroll"
+                    class="group">
                     
-                    <button @click="scrollPrev" class="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white text-primary shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 hover:bg-primary hover:text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
+                    <div class="relative">
+                        <button @click="scrollPrev" class="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white text-primary shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 hover:bg-primary hover:text-white" aria-label="Anterior">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
 
-                    <div x-ref="slider" class="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8 pt-4 -mx-4 px-4">
-                        {% for foto_id in fotos_alumnos %}
-                            {% set image = get_image(foto_id) %}
-                            <div class="snap-center shrink-0 w-[280px] md:w-[320px]">
-                                <div class="rounded-3xl overflow-hidden shadow-md border-4 border-white aspect-[4/5] relative group/photo">
-                                    <img src="{{ image.src }}" alt="Alumno aprobado" class="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-110" loading="lazy">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300"></div>
-                                    <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-2 rounded-xl shadow-lg opacity-0 group-hover/photo:opacity-100 transition-all duration-300 translate-y-4 group-hover/photo:translate-y-0">
-                                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                        <div x-ref="slider" class="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4 pt-4 -mx-4 px-4">
+                            {% for foto_id in fotos_alumnos %}
+                                {% set image = get_image(foto_id) %}
+                                <div class="snap-center shrink-0 w-[280px] md:w-[320px]">
+                                    <div class="rounded-3xl overflow-hidden shadow-md border-4 border-white aspect-[4/5] relative group/photo">
+                                        <img src="{{ image.src }}" alt="Alumno aprobado" class="w-full h-full object-cover transition-transform duration-700 group-hover/photo:scale-110" loading="lazy">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300"></div>
+                                        <div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur p-2 rounded-xl shadow-lg opacity-0 group-hover/photo:opacity-100 transition-all duration-300 translate-y-4 group-hover/photo:translate-y-0">
+                                            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+
+                        <button @click="scrollNext" class="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white text-primary shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 hover:bg-primary hover:text-white" aria-label="Siguiente">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
                     </div>
 
-                    <button @click="scrollNext" class="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white text-primary shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 hover:bg-primary hover:text-white">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </button>
+                    <!-- Paginación Dots -->
+                    <div class="flex justify-center gap-2 mt-6 flex-wrap">
+                        <template x-for="i in total" :key="i">
+                            <button @click="scrollTo(i - 1)" 
+                                class="transition-all duration-300 rounded-full"
+                                :class="activeIndex === (i - 1) ? 'w-6 h-2 bg-primary' : 'w-2 h-2 bg-primary/30 hover:bg-primary/50'"
+                                :aria-label="'Ir a imagen ' + i">
+                            </button>
+                        </template>
+                    </div>
                 </div>
             </div>
         {% endif %}

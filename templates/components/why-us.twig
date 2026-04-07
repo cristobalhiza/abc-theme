@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="max-w-5xl mx-auto px-6 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
         
         <div class="text-center mb-16 bg-[rgba(250,250,250,0.5)] rounded-3xl">
             <h2 class="text-primary font-black tracking-[0.3em] uppercase text-xs mb-3">Trayectoria</h2>
@@ -57,45 +57,76 @@
             <p class="text-muted text-base max-w-xl mx-auto font-medium">Nuestra experiencia y equipamiento garantizan tu seguridad frente al volante.</p>
         </div>
 
-        <div class="relative space-y-8 z-10">
+        <div class="relative space-y-8 md:space-y-0 z-10">
 {% for step in steps %}
     <div x-data="{ active: false }"
          @scroll.window="active = (($el.getBoundingClientRect().top + ($el.offsetHeight / 2)) <= (window.innerHeight / 1.5))"
-         class="flex flex-col md:flex-row items-center gap-20 {{ loop.index is even ? 'md:flex-row-reverse' : '' }}">
+         class="flex flex-col md:flex-row items-center relative {{ loop.index is even ? 'md:flex-row-reverse' : '' }} 
+                md:py-16
+                bg-white md:bg-transparent rounded-[32px] p-5 md:p-0 shadow-float md:shadow-none border-b-8 md:border-b-0 transition-colors duration-500 group"
+         :class="active ? 'border-primary md:border-transparent' : 'border-gray-200 md:border-transparent'">
         
-        <div class="w-full md:w-1/2 relative z-30">
-            <div class="bg-white rounded-3xl p-4 md:p-6 shadow-float border-b-8 transition-colors duration-500 group hover:-translate-y-2 relative overflow-hidden"
-                 :class="active ? 'border-primary' : 'border-gray-200'">
-                
-                <div class="flex items-center gap-4 mb-5">
-                    <div class="w-12 h-12 rounded-2xl text-white flex items-center justify-center shadow-lg transition-colors duration-500 group-hover:rotate-6"
-                         :class="active ? 'bg-primary' : 'bg-gray-300'">
-                        {{ step.icon|raw }}
-                    </div>
-                    <h3 class="text-2xl font-bold leading-tight font-display text-text-main">{{ step.title }}</h3>
-                </div>
-                <p class="text-[#888] text-base mb-4 leading-relaxed font-medium font-body">{{ step.desc }}</p>
-                
-                <div class="relative rounded-2xl overflow-hidden h-64 shadow-inner">
-                    <img src="{{ step.img }}" alt="{{ step.title }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-linear-to-t from-black/80 via-black/10 to-transparent opacity-70"></div>
-                    <div class="absolute bottom-4 left-4 flex items-center gap-2">
-                        <div class="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                        <span class="text-white text-[0.625rem] font-black uppercase tracking-[0.2em]">{{ step.label }}</span>
+        <!-- Lado de la Tarjeta Visual -->
+        <div class="w-full md:w-1/2 relative z-30 order-2 md:order-none {{ loop.index is even ? 'md:pl-[72px]' : 'md:pr-[72px]' }}">
+            
+            <!-- Marco blanco exclusivo de desktop -->
+            <div class="md:bg-white md:rounded-[32px] md:p-5 lg:p-6 md:shadow-float border-0 md:border-b-8 transition-colors duration-500"
+                 :class="active ? 'md:border-primary' : 'md:border-gray-200'">
+                 
+                 <!-- Contenedor interno de la imagen -->
+                <div class="rounded-2xl overflow-hidden relative h-64 md:h-auto md:aspect-video shadow-inner group-hover/img:shadow-lg transition-all duration-500">
+                    <img src="{{ step.img }}" alt="{{ step.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000" :class="active ? 'scale-105' : 'scale-100'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent transition-opacity duration-500" :class="active ? 'opacity-80' : 'opacity-40'"></div>
+                    
+                    <div class="absolute bottom-4 left-4 flex items-center gap-3 transition-transform duration-500" :class="active ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'">
+                        <div class="w-2.5 h-2.5 md:w-3 md:h-3 bg-primary rounded-full animate-pulse shadow-[0_0_12px_rgba(255,160,0,0.8)]"></div>
+                        <span class="text-white text-xs md:text-sm font-black uppercase tracking-[0.2em]">{{ step.label }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Nodo Central y Línea Estructural (Oculto en móvil) -->
         <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white border-[5px] items-center justify-center z-20 transition-colors duration-500"
              :class="active ? 'border-primary' : 'border-gray-200'">
             <div class="w-3 h-3 rounded-full transition-all duration-500"
                  :class="active ? 'bg-primary scale-100' : 'bg-transparent scale-0'"></div>
-            <div class="absolute z-0 h-1 w-12 transition-colors duration-500 {{ loop.index is even ? 'left-full' : 'right-full' }}"
-                 :class="active ? 'bg-primary/30' : 'bg-gray-200'"></div>
+            <!-- La línea mide exactamente 52px de ancho. Sumados a los 20px del radio del nodo, dan exactamente 72px, que calza milimétricamente con el padding horizontal -->
+            <div class="absolute z-0 h-1 w-[52px] transition-all duration-500 {{ loop.index is even ? 'md:right-full md:origin-right' : 'md:left-full md:origin-left' }}"
+                 :class="active ? 'bg-primary/30 scale-x-100' : 'bg-gray-200 scale-x-0'"></div>
         </div>
 
-        <div class="hidden md:block w-1/2"></div>
+        <!-- Lado del Contenido y Texto -->
+        <div class="w-full md:w-1/2 relative z-30 flex flex-col order-1 md:order-none pb-6 md:pb-0 
+                    items-start text-left 
+                    {{ loop.index is even ? 'md:items-end md:text-right md:pr-[72px]' : 'md:items-start md:text-left md:pl-[72px]' }}">
+            
+            <div class="flex items-center md:items-start md:flex-col gap-4 md:gap-0 mb-4 md:mb-6 w-full md:w-auto 
+                        justify-start {{ loop.index is even ? 'md:justify-end md:items-end' : 'md:justify-start' }}">
+                <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-2xl text-white flex items-center justify-center shadow-lg transition-all duration-500 md:mb-6"
+                     :class="active ? 'bg-primary shadow-primary/40 md:-translate-y-2' : 'bg-gray-300 translate-y-0'">
+                    {{ step.icon|raw }}
+                </div>
+                <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight font-display transition-colors duration-500"
+                    :class="active ? 'text-primary' : 'text-text-main'">{{ step.title }}</h3>
+            </div>
+                
+            <p class="text-[#888] md:text-muted text-base md:text-lg leading-relaxed font-medium font-body mb-0 md:mb-8 transition-opacity duration-500 md:max-w-sm"
+               :class="active ? 'opacity-100' : 'opacity-50'">{{ step.desc }}</p>
+            
+            <a href="/escuela" class="hidden md:inline-flex items-center gap-2 font-bold uppercase tracking-widest text-sm transition-colors duration-300 group/link mt-auto"
+               :class="active ? 'text-primary hover:text-accent' : 'text-gray-400'">
+                <span class="relative">
+                   Nuestra Escuela
+                   <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-accent transition-transform duration-300 
+                                scale-x-0 group-hover/link:scale-x-100 
+                                {{ loop.index is even ? 'md:origin-right' : 'md:origin-left' }}"
+                         :class="active ? '' : 'hidden'"></span>
+                </span>
+                <svg class="w-5 h-5 transition-transform duration-300 group-hover/link:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+        
     </div>
 {% endfor %}
         </div>
