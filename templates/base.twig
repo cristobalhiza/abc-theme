@@ -13,13 +13,13 @@
     <nav x-data="{ isScrolled: false, isMobileMenuOpen: false }" 
          x-effect="document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''"
          @scroll.window="isScrolled = (window.pageYOffset > 20)"
-         :class="isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'"
+         :class="isMobileMenuOpen ? 'bg-transparent py-5' : (isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5')"
          class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <a href="{{ site.url }}" class="flex items-center transition-transform hover:scale-105">
             <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp?v={{ "now"|date('U') }}" 
                  alt="Logo ABC Academia de Conducción" 
-                 :class="isScrolled ? 'h-10' : 'h-14'"
+                 :class="isScrolled ? 'h-9 md:h-10' : 'h-11 md:h-14'"
                  class="w-auto transition-all duration-500 object-contain" />
         </a>
             
@@ -87,7 +87,7 @@
                  </div>
 
                  {# Botones Inferiores #}
-                 <div class="absolute bottom-12 left-0 right-0 px-6 flex flex-col gap-3 z-10"
+                 <div class="absolute bottom-24 left-0 right-0 px-6 flex flex-col gap-3 z-10"
                       x-show="isMobileMenuOpen"
                       x-transition:enter="transition ease-out duration-700 delay-200 transform"
                       x-transition:enter-start="opacity-0 translate-y-12"
@@ -115,7 +115,7 @@
     {# Componente global: botones flotantes (WhatsApp, Back-to-top, CTA) #}
     {% include 'templates/components/floating-buttons.twig' %}
 
-    {# Componente global: Footer minimalista #}
+    {# Componente global: Footer  #}
     {% include 'templates/components/footer.twig' %}
 
     {{ function('wp_footer') }}
