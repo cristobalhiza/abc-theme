@@ -13,6 +13,7 @@
     <nav x-data="{ isScrolled: false, isMobileMenuOpen: false }" 
          x-effect="document.body.style.overflow = isMobileMenuOpen ? 'hidden' : ''"
          @scroll.window="isScrolled = (window.pageYOffset > 20)"
+         @close-mobile-menu.window="isMobileMenuOpen = false"
          :class="isMobileMenuOpen ? 'bg-transparent py-5' : (isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5')"
          class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
 <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -111,11 +112,10 @@
     <div class="min-h-screen">
         {% block content %}{% endblock %}
     </div>
+    {% include 'components/contact-modal.twig' %}
 
-    {# Componente global: botones flotantes (WhatsApp, Back-to-top, CTA) #}
     {% include 'templates/components/floating-buttons.twig' %}
 
-    {# Componente global: Footer  #}
     {% include 'templates/components/footer.twig' %}
 
     {{ function('wp_footer') }}
