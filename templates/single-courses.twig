@@ -2,25 +2,17 @@
 {% extends "base.twig" %}
 
 {% block content %}
-{# 1. Extracción de variables desde Carbon Fields y Fallbacks #}
-{% set img_principal = post.meta('_abc_img_secundaria') ?: (post.thumbnail ? post.thumbnail.src : null) %}
-{% set precio_normal = post.meta('_abc_precio_normal') %}
-{% set precio_oferta = post.meta('_abc_precio_oferta') %}
-{% set resolucion_texto = post.meta('_abc_resolucion_texto') %}
-{% set resolucion_pdf = post.meta('_abc_resolucion_pdf') %}
-{% set requisitos = post.meta('_abc_requisitos') %}
-{% set descargas = post.meta('_abc_descargas') %}
-{% set woo_id = post.meta('_abc_woo_id') %}
+{% set img_principal = img_secundaria ?: (post.thumbnail ? post.thumbnail.src : null) %}
 
-<main class="max-w-7xl mx-auto px-6 pt-32 pb-24">
+<main class="max-w-7xl mx-auto px-6 pt-24 pb-16">
     
     {# Header del Curso #}
-    <div class="mb-12 md:mb-16">
-        <div class="flex items-center gap-3 text-primary mb-6">
-            <span class="h-1 w-12 bg-primary rounded-full"></span>
-            <span class="text-xs md:text-sm font-bold uppercase tracking-[0.2em]">Detalle del Curso</span>
+    <div class="mb-8 md:mb-12">
+        <div class="flex items-center gap-3 text-primary mb-4">
+            <span class="h-1 w-10 bg-primary rounded-full"></span>
+            <span class="text-xs font-bold uppercase tracking-[0.2em]">Detalle del Curso</span>
         </div>
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-text-main font-display leading-[1.1]">
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-text-main font-display leading-[1.1]">
             {{ post.title }}
         </h1>
     </div>
@@ -28,18 +20,18 @@
     <div class="flex flex-col lg:flex-row gap-12 items-start">
         
         {# Columna Principal (Izquierda) #}
-        <section class="w-full lg:w-2/3 space-y-8 md:space-y-12">
+        <section class="w-full lg:w-2/3 space-y-6 md:space-y-10">
             
             {# Imagen Dinámica #}
             {% if img_principal %}
-                <div class="w-full aspect-video md:h-[400px] relative overflow-hidden rounded-[32px] shadow-float border border-gray-100 group">
+                <div class="w-full aspect-video md:h-[350px] relative overflow-hidden rounded-3xl shadow-float border border-gray-100 group">
                     <img src="{{ img_principal }}" alt="{{ post.title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 </div>
             {% endif %}
 
             {# Contenido Principal #}
             {% if post.content %}
-                <div class="bg-white rounded-[32px] p-8 md:p-10 shadow-float border border-gray-50">
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-float border border-gray-50">
                     <h3 class="text-2xl font-bold text-text-main mb-6 font-display flex items-center gap-3">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Descripción General
@@ -49,10 +41,54 @@
                     </div>
                 </div>
             {% endif %}
+                        {# OBJETIVOS DEL CURSO #}
+            {% if objetivos %}
+                <div class="bg-primary/5 rounded-3xl p-6 md:p-8 shadow-inner border border-primary/10 mb-6 md:mb-10">
+                    <h3 class="text-2xl font-bold text-text-main mb-6 font-display flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-md">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        Objetivos del Curso
+                    </h3>
+                    
+                    <div class="prose prose-lg max-w-none text-text-main font-medium leading-relaxed prose-ul:list-none prose-ul:pl-0 prose-li:relative prose-li:pl-8 before:prose-li:absolute before:prose-li:left-0 before:prose-li:top-1.5 before:prose-li:w-5 before:prose-li:h-5 before:prose-li:bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%230683C0%22%20stroke-width%3D%223%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20d%3D%22M5%2013l4%204L19%207%22%2F%3E%3C%2Fsvg%3E')] before:prose-li:bg-no-repeat before:prose-li:bg-center">
+                        {{ objetivos|raw }}
+                    </div>
+                </div>
+            {% endif %}
+            {# PROGRAMA / TEMARIO   #}
+            {% if programa is not empty %}
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-float border border-gray-50">
+                    
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-text-main font-display flex items-center gap-3 mb-2">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                            Programa de Estudio
+                        </h3>
+                        <p class="text-muted font-medium text-sm">Estructura completa de clases teóricas, evaluaciones y práctica en ruta.</p>
+                    </div>
+                    
+                    <ul class="space-y-2">
+                        {% for item in programa %}
+                            <li class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 p-4 rounded-2xl bg-background-light border border-gray-50 hover:border-primary/20 hover:shadow-sm transition-all duration-300 group">
+                                
+                                <span class="inline-flex items-center justify-center px-4 py-2 bg-white rounded-xl text-xs font-bold text-primary uppercase tracking-widest shadow-sm border border-gray-100 shrink-0 w-fit sm:w-40 text-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                    {{ item.etiqueta }}
+                                </span>
+                                
+                                <span class="font-semibold text-text-main text-sm md:text-base leading-snug">
+                                    {{ item.contenido }}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                </div>
+            {% endif %}
 
             {# Requisitos #}
             {% if requisitos %}
-                <div class="bg-white rounded-[32px] p-8 md:p-10 shadow-float border border-gray-50">
+                <div class="bg-white rounded-3xl p-6 md:p-8 shadow-float border border-gray-50">
                     <h3 class="text-2xl font-bold text-text-main mb-6 font-display flex items-center gap-3">
                         <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         Requisitos Mínimos
@@ -63,13 +99,15 @@
                 </div>
             {% endif %}
 
+
+
             {# Resolución Legal #}
             {% if resolucion_pdf %}
-                <a href="{{ resolucion_pdf }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 p-6 md:p-8 bg-surface rounded-[32px] shadow-float border border-gray-50 hover:-translate-y-2 hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                <a href="{{ resolucion_pdf }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 p-5 md:p-6 bg-surface rounded-3xl shadow-float border border-gray-50 hover:-translate-y-2 hover:border-primary/20 hover:shadow-xl transition-all duration-300">
                     <div class="w-14 h-14 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     </div>
-                    <div class="flex-grow">
+                    <div class="grow">
                         <p class="font-bold text-text-main text-lg mb-1">{{ resolucion_texto|default('Resolución Ministerio de Transportes') }}</p>
                         <p class="text-sm text-primary font-bold uppercase tracking-widest flex items-center gap-2">
                             Ver Documento Oficial <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -83,7 +121,7 @@
         <aside class="w-full lg:w-1/3 lg:sticky lg:top-32 space-y-8">
             
             {# Tarjeta de Precio #}
-            <div class="bg-surface rounded-[32px] p-8 shadow-float border border-primary ring-4 ring-primary/5">
+            <div class="bg-surface rounded-3xl p-6 shadow-float border border-primary ring-4 ring-primary/5">
                 <div class="inline-block px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-accent text-white mb-8 shadow-md">
                     Matrícula Abierta
                 </div>
@@ -107,36 +145,34 @@
                 </div>
 
                 {# Botón de Compra / Contacto #}
-{# Botón de Compra / Contacto #}
                 <button type="button" 
                         x-data
                         @click.prevent="$dispatch('open-contact-modal', { course: '{{ post.title|escape('js') }}' })"
-                        class="w-full h-14 bg-primary text-white rounded-2xl font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:brightness-110 shadow-lg shadow-primary/30 transition-all duration-300 group focus:outline-none cursor-pointer relative overflow-hidden">
+                        class="w-full h-12 bg-primary text-white rounded-xl font-bold uppercase tracking-wide flex items-center justify-center gap-2 hover:brightness-110 shadow-lg shadow-primary/30 transition-all duration-300 group focus:outline-none cursor-pointer relative overflow-hidden">
                     <span class="relative z-10 flex items-center gap-2">
                         Matricularme 
                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </span>
-                    {# Efecto de brillo sutil en el botón #}
-                    <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    <div class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
                 </button>
                 
                 {# Indicadores de Confianza (Trust Badges) #}
                 <div class="mt-6 pt-6 border-t border-gray-100/60">
                     <ul class="space-y-3.5">
                         <li class="flex items-center gap-3 text-sm text-text-main font-medium">
-                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <div class="shrink-0 w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </div>
                             <span>Escuela certificada por el <strong>MTT</strong></span>
                         </li>
                         <li class="flex items-center gap-3 text-sm text-text-main font-medium">
-                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+                            <div class="shrink-0 w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </div>
                             <span>Plataforma de <strong>pago 100% seguro</strong></span>
                         </li>
                         <li class="flex items-center gap-3 text-sm text-text-main font-medium">
-                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center">
+                            <div class="shrink-0 w-8 h-8 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
                             <span>Matrícula con <strong>cupos limitados</strong></span>
@@ -147,7 +183,7 @@
 
             {# Tarjeta de Descargas Adicionales #}
             {% if descargas is not empty %}
-                <div class="bg-surface rounded-[32px] p-8 shadow-float border border-gray-50">
+                <div class="bg-surface rounded-3xl p-6 shadow-float border border-gray-50">
                     <h3 class="text-xl font-bold text-text-main mb-6 font-display">Material de Estudio</h3>
                     <ul class="space-y-3">
                         {% for descarga in descargas %}

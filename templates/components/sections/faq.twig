@@ -1,0 +1,160 @@
+{# Ubicación: templates/components/sections/faq.twig #}
+<section id="faq" class="py-24 lg:py-32 bg-background relative overflow-hidden">
+    {# Decoración dinámica de fondo #}
+    <div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col lg:flex-row gap-16 items-start">
+            
+            {# Columna Izquierda: Cabecera Estática #}
+            <div class="w-full lg:w-1/3 lg:sticky lg:top-32">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[0.7rem] font-bold uppercase tracking-[0.2em] mb-8">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Help Center
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-text-main font-display mb-8 leading-[1.1]">
+                    Preguntas <br class="hidden lg:block"> <span class="text-primary underline decoration-primary/20 underline-offset-8">Frecuentes</span>
+                </h2>
+                <p class="text-lg text-muted font-medium mb-10 leading-relaxed">
+                    Resolvemos tus dudas para que inicies tu viaje con total confianza.
+                </p>
+
+                {# Nuevo Botón WhatsApp #}
+                <a href="https://api.whatsapp.com/send?phone=56992199314&text=%C2%A1Hola!%20Necesito%20m%C3%A1s%20informaci%C3%B3n...." 
+                   target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-4 px-8 py-4 bg-white text-primary border-2 border-primary/20 font-bold rounded-2xl hover:bg-primary hover:text-white hover:border-primary shadow-xl shadow-primary/5 transition-all duration-300 group">
+                    <div class="p-2 bg-primary/10 rounded-lg group-hover:bg-white/20 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    </div>
+                    Tengo otra duda
+                </a>
+            </div>
+
+            {# Columna Derecha: Acordeones en Grid Compacto #}
+            <div class="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6" x-data="{ activeAccordion: null }">
+                
+                {# Pregunta 1 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 1 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 1 ? activeAccordion = null : activeAccordion = 1" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Cuál es la edad mínima?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 1 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 1" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                17 años con autorización notarial para Clase B, o 18 cumplidos. Para profesionales (A2/A4), mínimo 20 años y 2 de licencia B.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Pregunta 2 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 2 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 2 ? activeAccordion = null : activeAccordion = 2" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Puedo usar mi auto?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 2 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 2" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                No, por seguridad todas las clases son en nuestros vehículos doble comando autorizados por el Ministerio de Transportes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Pregunta 3 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 3 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 3 ? activeAccordion = null : activeAccordion = 3" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Dónde doy el examen?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 3 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 3" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                En la Dirección de Tránsito de la municipalidad de tu domicilio. Nosotros te preparamos para rendirlo con éxito en cualquier comuna.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Pregunta 4 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 4 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 4 ? activeAccordion = null : activeAccordion = 4" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Clases acompañado?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 4 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 4" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                No, las clases son estrictamente individuales entre alumno e instructor para garantizar la concentración y seguridad durante la práctica.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Pregunta 5 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 5 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 5 ? activeAccordion = null : activeAccordion = 5" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Cuántas clases necesito?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 5 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 5" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                El curso incluye lo exigido por el ministerio. Si al finalizar necesitas clases extra para ganar confianza, puedes coordinarlas con nosotros.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Pregunta 6 #}
+                <div class="flex flex-col">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300"
+                         :class="activeAccordion === 6 ? 'ring-2 ring-primary/20 shadow-md' : ''">
+                        <button @click="activeAccordion === 6 ? activeAccordion = null : activeAccordion = 6" 
+                                class="w-full px-7 py-6 text-left flex items-start justify-between gap-4 group">
+                            <span class="text-base font-bold text-text-main group-hover:text-primary transition-colors leading-tight">¿Qué documentos pido?</span>
+                            <div class="w-8 h-8 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0 transition-all duration-300"
+                                 :class="activeAccordion === 6 ? 'rotate-180 bg-primary text-white' : ''">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </button>
+                        <div x-show="activeAccordion === 6" x-collapse x-cloak>
+                            <div class="px-7 pb-6 text-sm text-secondary-text font-medium leading-relaxed">
+                                Cédula de Identidad vigente y certificado de estudio. Para menores de 18, autorización notarial de los padres para la matrícula.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

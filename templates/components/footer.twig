@@ -1,20 +1,85 @@
 {# templates/components/footer.twig #}
-<footer class="bg-surface border-t border-gray-100 mt-auto flex flex-col md:flex-row justify-between items-center px-6 md:px-12 py-8 gap-6 font-body text-sm font-medium relative z-20">
-	<a href="{{ site.url }}" class="flex items-center transition-transform hover:scale-105">
-		<img src="{{ theme.link }}/assets\logos\ABC-Horizontal.webp?v=2" alt="Logo ABC Academia de Conducción" class="w-[250px] object-contain"/>
-	</a>
+<footer class="bg-white border-t border-gray-100 pt-20 pb-10 relative z-20">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            
+            {# Columna 1: Logo y Bio #}
+            <div class="space-y-6">
+                <a href="{{ site.url }}" class="inline-block transition-transform hover:scale-105">
+                    <img src="{{ theme.link }}/assets/logos/ABC-Horizontal.webp?v=2" alt="Logo ABC Academia de Conducción" class="h-12 w-auto object-contain"/>
+                </a>
+                <p class="text-muted text-sm leading-relaxed font-medium">
+                    Líderes en formación de conductores profesionales y particulares en Santiago. Tu seguridad es nuestro compromiso.
+                </p>
+            </div>
 
-	<div class="text-muted text-center md:text-right text-xs md:text-sm">
-		© 2001 -
-		{{ "now"|date("Y") }}
-		ABC Conducción.<br class="md:hidden">
-		Sitio web desarrollado por
-		<a href="https://cristobalhiza.com" target="_blank" rel="noopener noreferrer" class="text-[#888] hover:text-primary transition-colors font-bold">cristobalhiza.com</a>
-	</div>
+            {# Columna 2: Horarios #}
+            <div class="space-y-6">
+                <h4 class="text-text-main font-bold uppercase tracking-widest text-xs">Horario de Atención</h4>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-primary/5 rounded-lg text-primary shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-text-main">Lunes a Viernes</p>
+                            <p class="text-xs text-muted font-medium mt-0.5">09:00 AM - 18:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 text-xs text-muted italic ml-9">
+                        Sábados y Domingos: Cerrado
+                    </div>
+                </div>
+            </div>
 
-	<div class="flex flex-wrap justify-center gap-6">
-		<a href="#" class="text-muted hover:text-accent transition-colors duration-300">Privacidad</a>
-		<a href="#" class="text-muted hover:text-accent transition-colors duration-300">Términos</a>
-		<a href="#" class="text-muted hover:text-accent transition-colors duration-300">Preguntas Frecuentes</a>
-	</div>
+            {# Columna 3: Redes Sociales #}
+            <div class="space-y-6">
+                <h4 class="text-text-main font-bold uppercase tracking-widest text-xs">Síguenos</h4>
+                <div class="flex flex-col gap-4">
+                    <a href="https://www.instagram.com/abcconduccion/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-muted hover:text-primary transition-all group">
+                        <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </div>
+                        <span class="text-sm font-bold uppercase tracking-wider">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/ABCconduccioncl" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 text-muted hover:text-primary transition-all group">
+                        <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
+                        </div>
+                        <span class="text-sm font-bold uppercase tracking-wider">Facebook</span>
+                    </a>
+                </div>
+            </div>
+
+            {# Columna 4: Ubicación #}
+            <div class="space-y-6">
+                <h4 class="text-text-main font-bold uppercase tracking-widest text-xs">Encuéntranos</h4>
+                <div class="space-y-4">
+                    <a href="https://maps.app.goo.gl/Wxz6ic5KYoHDiBXF9" target="_blank" rel="noopener noreferrer" class="flex items-start gap-4 p-4 rounded-2xl bg-background-light hover:bg-primary/5 border border-transparent hover:border-primary/20 transition-all group">
+                        <div class="p-2 bg-primary/10 rounded-lg text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div class="text-xs font-medium text-muted leading-relaxed">
+                            Av. Bellavista 0213, <br> Providencia, Santiago. <br>
+                            <span class="text-primary font-bold mt-1 inline-block">Ver en Google Maps</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        {# Footer Bottom #}
+        <div class="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-muted text-center md:text-left text-xs md:text-sm">
+                © 2001 - {{ "now"|date("Y") }} ABC Conducción.<br class="md:hidden">
+                Sitio web desarrollado por
+                <a href="https://cristobalhiza.com" target="_blank" rel="noopener noreferrer" class="text-text-main hover:text-primary transition-colors font-bold">cristobalhiza.com</a>
+            </div>
+            <div class="flex items-center gap-8 text-xs font-bold text-muted uppercase tracking-widest">
+                <a href="#" class="hover:text-primary transition-colors">Privacidad</a>
+                <a href="#" class="hover:text-primary transition-colors">Términos</a>
+            </div>
+        </div>
+    </div>
 </footer>

@@ -16,5 +16,8 @@ $context['resolucion_pdf'] = carbon_get_post_meta( $timber_post->ID, 'abc_resolu
 $context['requisitos'] = carbon_get_post_meta( $timber_post->ID, 'abc_requisitos' );
 $context['descargas'] = carbon_get_post_meta( $timber_post->ID, 'abc_descargas' );
 $context['img_secundaria'] = carbon_get_post_meta( $timber_post->ID, 'abc_img_secundaria' );
+$context['objetivos'] = carbon_get_post_meta( $timber_post->ID, 'abc_objetivos' );
+$context['programa'] = carbon_get_post_meta( $timber_post->ID, 'abc_programa' );
+$context['woo_id'] = carbon_get_post_meta( $timber_post->ID, 'abc_woo_id' );
 
 Timber::render( 'templates/single-courses.twig', $context );
