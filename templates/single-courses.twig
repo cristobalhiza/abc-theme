@@ -101,19 +101,25 @@
 
 
 
-            {# Resolución Legal #}
-            {% if resolucion_pdf %}
-                <a href="{{ resolucion_pdf }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 p-5 md:p-6 bg-surface rounded-3xl shadow-float border border-gray-50 hover:-translate-y-2 hover:border-primary/20 hover:shadow-xl transition-all duration-300">
-                    <div class="w-14 h-14 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    </div>
-                    <div class="grow">
-                        <p class="font-bold text-text-main text-lg mb-1">{{ resolucion_texto|default('Resolución Ministerio de Transportes') }}</p>
-                        <p class="text-sm text-primary font-bold uppercase tracking-widest flex items-center gap-2">
-                            Ver Documento Oficial <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </p>
-                    </div>
-                </a>
+            {# Resolución Legal y Certificaciones #}
+            {% if resoluciones is not empty %}
+                <div class="space-y-4 md:space-y-6">
+                    {% for doc in resoluciones %}
+                        {% if doc.archivo %}
+                            <a href="{{ doc.archivo }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-5 p-5 md:p-6 bg-surface rounded-3xl shadow-float border border-gray-50 hover:-translate-y-2 hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                                <div class="w-14 h-14 shrink-0 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                </div>
+                                <div class="grow">
+                                    <p class="font-bold text-text-main text-lg mb-1">{{ doc.titulo|default('Documento Oficial') }}</p>
+                                    <p class="text-sm text-primary font-bold uppercase tracking-widest flex items-center gap-2">
+                                        Ver Documento Oficial <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </p>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% endif %}
         </section>
 

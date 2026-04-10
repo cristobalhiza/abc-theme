@@ -31,10 +31,16 @@
                 </p>
             </div>
 
-            <button class="group bg-primary text-white px-6 py-3 lg:px-8 lg:py-4 rounded-xl font-display font-bold text-base lg:text-lg flex items-center gap-2 hover:-translate-y-1 transition-all shadow-lg hover:shadow-primary/30 uppercase tracking-wide">
-                Inicia tu viaje 
-                <svg class="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-            </button>
+            <div class="flex flex-col sm:flex-row gap-4 mt-2">
+                <a href="{{ site.url }}#contacto" class="group bg-primary text-white px-6 py-3 lg:px-8 lg:py-4 rounded-xl font-display font-bold text-base lg:text-lg flex justify-center items-center gap-2 hover:-translate-y-1 transition-all shadow-lg hover:shadow-primary/30 uppercase tracking-wide">
+                    Matricúlate ya
+                    <svg class="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-1 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7-7"></path></svg>
+                </a>
+                <a href="{{ site.url }}/empresas" class="group bg-white text-text-main border-2 border-primary/20 hover:border-primary px-6 py-3 lg:px-8 lg:py-4 rounded-xl font-display font-bold text-base lg:text-lg flex justify-center items-center gap-2 hover:-translate-y-1 transition-all shadow-sm hover:shadow-lg hover:shadow-primary/10 uppercase tracking-wide">
+                    Capacita tu empresa
+                    <svg class="w-4 h-4 lg:w-5 lg:h-5 group-hover:scale-110 transition-transform text-primary/70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                </a>
+            </div>
         </div>
 
         {# Columna Derecha: Imágenes y Tarjetas Flotantes #}

@@ -45,12 +45,20 @@ function abc_attach_curso_meta()
                 ->set_width(50),
             Field::make('rich_text', 'abc_objetivos', 'Objetivos del Curso')
                 ->set_help_text('Escribe los objetivos.'),
-            Field::make('text', 'abc_resolucion_texto', 'Nombre del documento')
-                ->set_help_text('Ej: Resolución 3462/2020...')
-                ->set_width(50),
-            Field::make('file', 'abc_resolucion_pdf', 'PDF de la Resolución')
-                ->set_value_type('url')
-                ->set_width(25),
+            Field::make('complex', 'abc_resoluciones', 'Resoluciones y Certificaciones')
+                ->set_layout('tabbed-horizontal')
+                ->setup_labels(array(
+                    'plural_name' => 'Documentos',
+                    'singular_name' => 'Documento',
+                ))
+                ->add_fields(array(
+                    Field::make('text', 'titulo', 'Nombre del Documento')
+                        ->set_help_text('Ej: Resolución 3462/2020, Certificado de Calidad, etc.')
+                        ->set_width(50),
+                    Field::make('file', 'archivo', 'Archivo PDF')
+                        ->set_value_type('url')
+                        ->set_width(50),
+                )),
             Field::make('rich_text', 'abc_requisitos', 'Requisitos del Curso'),
             Field::make('complex', 'abc_programa', 'Programa del Curso')
                 ->set_layout('tabbed-vertical')
