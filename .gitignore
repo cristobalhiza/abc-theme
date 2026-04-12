@@ -24,3 +24,5 @@ tailwindcss
 *.swo
 *~
 repomix-output-cristobalhiza-abc-theme.xml
+
+*.ps1
