@@ -13,3 +13,9 @@ add_action('after_setup_theme', function() {
         'primary' => 'Menú Principal'
     ]);
 });
+
+// Agregar variables globales al contexto de Timber (disponibles en todos los templates .twig)
+add_filter('timber/context', function ($context) {
+    $context['turnstile_site_key'] = defined('TURNSTILE_SITE_KEY') ? TURNSTILE_SITE_KEY : '';
+    return $context;
+});

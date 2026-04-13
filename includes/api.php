@@ -15,9 +15,42 @@ function abc_handle_contact_submit(WP_REST_Request $request)
 {
     $params = $request->get_json_params();
 
+    // ---------------------------------------------------------------
+    // Verificación de Cloudflare Turnstile
+    // ---------------------------------------------------------------
+    $turnstile_token = sanitize_text_field($params['turnstileToken'] ?? '');
+
+    if (empty($turnstile_token)) {
+        return new WP_REST_Response(array('message' => 'Falta la verificación de seguridad. Intenta nuevamente.'), 400);
+    }
+
+    if (defined('TURNSTILE_SECRET_KEY') && TURNSTILE_SECRET_KEY) {
+        $verify_response = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
+            'body' => array(
+                'secret'   => TURNSTILE_SECRET_KEY,
+                'response' => $turnstile_token,
+                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+            ),
+        ));
+
+        if (is_wp_error($verify_response)) {
+            return new WP_REST_Response(array('message' => 'Error al verificar la seguridad. Intenta nuevamente.'), 500);
+        }
+
+        $verify_body = json_decode(wp_remote_retrieve_body($verify_response), true);
+
+        if (empty($verify_body['success'])) {
+            return new WP_REST_Response(array('message' => 'Verificación de seguridad fallida. Intenta nuevamente.'), 403);
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Procesamiento del formulario
+    // ---------------------------------------------------------------
     $name   = sanitize_text_field($params['name'] ?? '');
     $email  = sanitize_email($params['email'] ?? '');
     $phone  = sanitize_text_field($params['phone'] ?? '');
+    $is_company = !empty($params['isCompany']);
     $course_param = $params['course'] ?? '';
     if (is_array($course_param)) {
         $course_clean = array_map('sanitize_text_field', $course_param);
@@ -31,7 +64,8 @@ function abc_handle_contact_submit(WP_REST_Request $request)
     }
 
     $to      = 'cristobalhiza@gmail.com';
-    $subject = 'Nuevo Contacto Web: ' . $course . ' - ' . $name;
+    $type_label = $is_company ? 'Empresa' : 'Persona';
+    $subject = 'Nuevo Contacto Web: ' . $course . ' - ' . $name . ' (' . $type_label . ')';
 
     $body = "
         <h2>Nuevo prospecto desde el sitio web</h2>
@@ -39,14 +73,13 @@ function abc_handle_contact_submit(WP_REST_Request $request)
         <p><strong>Teléfono:</strong> {$phone}</p>
         <p><strong>Email:</strong> {$email}</p>
         <p><strong>Curso de interés:</strong> {$course}</p>
+        <p><strong>Tipo:</strong> {$type_label}</p>
     ";
 
     $headers = array(
         'Content-Type: text/html; charset=UTF-8',
         'Reply-To: ' . $name . ' <' . $email . '>'
     );
-
-    $sent = wp_mail($to, $subject, $body, $headers);
 
     global $abc_mail_error;
     $sent = wp_mail($to, $subject, $body, $headers);

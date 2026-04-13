@@ -146,7 +146,22 @@
                     <p x-show="errors.course" class="text-xs text-red-500 ml-1 mt-1" x-cloak>Por favor, selecciona al menos un curso.</p>
                 </div>
 
-                <button type="submit" :disabled="isLoading || errors.phone || formData.course.length === 0" 
+                <label class="flex items-center gap-3 cursor-pointer group w-fit ml-1 mt-2">
+                    <div class="relative flex items-center justify-center w-5 h-5 border-2 rounded transition-colors"
+                         :class="formData.isCompany ? 'border-primary bg-primary' : 'border-gray-300 group-hover:border-primary'">
+                         <svg x-show="formData.isCompany" x-cloak class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <input type="checkbox" x-model="formData.isCompany" class="sr-only">
+                    <span class="text-sm font-bold text-text-main select-none">¿Eres empresa?</span>
+                </label>
+
+                {# Cloudflare Turnstile Widget #}
+                <div class="mt-3">
+                    <div x-ref="turnstileContainer"></div>
+                    <p x-show="errors.turnstile" class="text-xs text-red-500 ml-1 mt-1" x-cloak>Por favor, completa la verificación de seguridad.</p>
+                </div>
+
+                <button type="submit" :disabled="isLoading || errors.phone || formData.course.length === 0 || !formData.turnstileToken" 
                         class="w-full h-14 mt-4 bg-primary text-white rounded-2xl font-bold font-display uppercase tracking-wide flex items-center justify-center gap-2 hover:brightness-110 shadow-lg shadow-primary/30 transition-all disabled:opacity-70 disabled:cursor-not-allowed group">
                     <span x-text="isLoading ? 'Enviando...' : 'Enviar mensaje'"></span>
                     <svg x-show="!isLoading" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
@@ -164,19 +179,23 @@ document.addEventListener('alpine:init', () => {
             name: '',
             email: '',
             phone: '',
-            course: []
+            course: [],
+            isCompany: false,
+            turnstileToken: ''
         },
         courseOptions: [
             { value: 'Clase B', label: 'Licencia Clase B' },
             { value: 'Clase A2', label: 'Profesional A2' },
             { value: 'Clase A4', label: 'Profesional A4' }
         ],
-        errors: { phone: false, course: false },
+        errors: { phone: false, course: false, turnstile: false },
         isLoading: false,
         isSuccess: false,
         serverError: '',
+        _turnstileWidgetId: null,
 
         init() {
+            // Preselección de curso desde eventos externos
             window.addEventListener('preselect-course', (e) => {
                 const requestedCourse = e.detail;
                 if (!requestedCourse) return;
@@ -206,6 +225,43 @@ document.addEventListener('alpine:init', () => {
                     this.errors.course = false;
                 }
             });
+
+            // Renderizar Turnstile al abrir el modal (lazy)
+            this._renderTurnstile();
+        },
+
+        _renderTurnstile() {
+            const container = this.$refs.turnstileContainer;
+            if (!container) return;
+
+            const doRender = () => {
+                if (this._turnstileWidgetId !== null) return;
+                this._turnstileWidgetId = turnstile.render(container, {
+                    sitekey: '{{ turnstile_site_key }}',
+                    callback: (token) => {
+                        this.formData.turnstileToken = token;
+                        this.errors.turnstile = false;
+                    },
+                    'expired-callback': () => {
+                        this.formData.turnstileToken = '';
+                    },
+                    'error-callback': () => {
+                        this.formData.turnstileToken = '';
+                    },
+                    theme: 'light'
+                });
+            };
+
+            if (typeof turnstile !== 'undefined') {
+                doRender();
+            } else {
+                const interval = setInterval(() => {
+                    if (typeof turnstile !== 'undefined') {
+                        clearInterval(interval);
+                        doRender();
+                    }
+                }, 200);
+            }
         },
 
         getCourseLabel(val) {
@@ -222,7 +278,10 @@ document.addEventListener('alpine:init', () => {
             if (this.formData.course.length === 0) {
                 this.errors.course = true;
             }
-            if (this.errors.phone || this.errors.course) return;
+            if (!this.formData.turnstileToken) {
+                this.errors.turnstile = true;
+            }
+            if (this.errors.phone || this.errors.course || this.errors.turnstile) return;
             
             this.isLoading = true;
             this.serverError = '';
@@ -240,20 +299,29 @@ document.addEventListener('alpine:init', () => {
                     this.isSuccess = true;
                 } else {
                     this.serverError = result.message || 'Ocurrió un error al enviar el mensaje. Intenta nuevamente.';
+                    this._resetTurnstile();
                 }
             } catch (error) {
                 this.serverError = 'Error de conexión. Por favor, verifica tu internet.';
+                this._resetTurnstile();
             } finally {
                 this.isLoading = false;
             }
         },
 
+        _resetTurnstile() {
+            this.formData.turnstileToken = '';
+            if (this._turnstileWidgetId !== null && typeof turnstile !== 'undefined') {
+                turnstile.reset(this._turnstileWidgetId);
+            }
+        },
+
         resetForm() {
-            this.formData = { name: '', email: '', phone: '', course: [] };
+            this.formData = { name: '', email: '', phone: '', course: [], isCompany: false, turnstileToken: '' };
             this.isSuccess = false;
             this.serverError = '';
-            this.errors.phone = false;
-            this.errors.course = false;
+            this.errors = { phone: false, course: false, turnstile: false };
+            this._resetTurnstile();
         }
     }))
 })
