@@ -31,7 +31,7 @@
                     {# Imagen y Badge Superior #}
                     <div class="h-56 relative overflow-hidden bg-gray-200">
                         {% if course.thumbnail %}
-                            <img src="{{ course.thumbnail.src }}" alt="{{ course.title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="{{ course.thumbnail.src }}" alt="{{ course.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         {% endif %}
                         
                         <div class="absolute top-4 left-4 px-4 py-1 rounded-full text-[0.625rem] font-bold uppercase tracking-widest shadow-md {{ is_primary ? 'bg-accent text-white' : 'bg-primary text-white' }}">
@@ -42,7 +42,7 @@
                     {# Contenido de la Tarjeta #}
                     <div class="p-8 flex flex-col flex-1 relative">
                         <div class="flex justify-between items-start mb-2 relative z-0">
-                            {# Título transformado a h3 (el enlace invisible ya hace el trabajo) #}
+                            {# Título transformado a h3 #}
                             <h3 class="text-2xl font-bold font-body text-text-main group-hover:text-primary transition-colors">{{ course.title }}</h3>
                             {% if price %}
                                 <span class="text-primary font-bold text-lg font-body">${{ price|number_format(0, ',', '.') }}</span>

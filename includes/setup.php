@@ -7,6 +7,7 @@ add_action('after_setup_theme', function() {
 
     // Soporte nativo del tema
     add_theme_support('post-thumbnails');
+    add_theme_support('title-tag');
     
     // Registro de menús
     register_nav_menus([

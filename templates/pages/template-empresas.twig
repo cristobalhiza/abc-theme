@@ -43,53 +43,281 @@
         </div>
     </section>
 
-    {# ─── Cursos con Sence (Franquicia) ─── #}
-    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-18">
-        <div class="flex flex-col items-center mb-10 md:mb-16">
+    {# ─── Cursos con Sence (Franquicia) - Layout Presentación ─── #}
+    <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-18 space-y-12 md:space-y-16">
+        
+        <div class="flex flex-col items-center mb-6">
             <span class="bg-blue-50 text-blue-600 font-bold uppercase tracking-widest text-xs px-4 py-1.5 rounded-full mb-3 md:mb-4">Beneficios para empresas</span>
             <h2 class="font-display font-bold text-3xl md:text-5xl text-center text-slate-900">Franquicia Tributaria SENCE</h2>
             <p class="mt-4 text-center text-secondary-text max-w-2xl font-medium">Contamos con programas autorizados por SENCE que permiten a las empresas utilizar la franquicia tributaria para capacitar a sus equipos con los más altos estándares.</p>
         </div>
-        
-        <div class="grid lg:grid-cols-2 gap-6 md:gap-10">
-            {# Curso B #}
-            <div class="bg-white p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-4xl shadow-float border border-primary/20 flex flex-col h-full relative overflow-hidden group hover:border-primary/50 transition-colors">
-                <div class="absolute right-0 top-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
-                
-                <h3 class="font-display font-bold text-3xl text-text-main mb-2">Clase B</h3>
-                <p class="text-sm font-bold text-muted uppercase tracking-widest mb-6">Presencial y E-learning Sincrónico</p>
-                
-                <p class="text-secondary-text mb-8 leading-relaxed">
-                    Ideal para la formación inicial o colaboradores que requieren obtener su primera licencia para conducir vehículos ligeros. Programa completo teórico y práctico.
-                </p>
-                
-                <div class="mt-auto transform transition-transform group-hover:translate-x-1">
-                    <span class="inline-flex items-center gap-2 text-primary font-bold bg-primary/10 px-4 py-2 rounded-xl">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Código SENCE Activo
-                    </span>
+
+        {# Contenedor del Slider #}
+        <div x-data="{ 
+                activeSlide: 0, 
+                slides: 3,
+                interval: null,
+                startAutoPlay() {
+                    this.interval = setInterval(() => {
+                        this.activeSlide = this.activeSlide < this.slides - 1 ? this.activeSlide + 1 : 0;
+                    }, 6000);
+                },
+                stopAutoPlay() {
+                    if (this.interval) clearInterval(this.interval);
+                },
+                init() {
+                    this.startAutoPlay();
+                }
+            }" 
+            @mouseenter="stopAutoPlay()" 
+            @mouseleave="startAutoPlay()"
+            class="relative w-full max-w-[100vw]">
+            {# Wrapper con overflow hidden #}
+            <div class="overflow-hidden rounded-2xl md:rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-200">
+                <div class="flex transition-transform duration-500 ease-in-out" :style="`transform: translateX(-${activeSlide * 100}%)`">
+                    
+                    {# Slide 1: Curso B #}
+                    <div class="w-full flex-shrink-0 flex flex-col xl:flex-row bg-[#f8fafc]">
+                        {# Left Dark Pane #}
+                        <div class="w-full xl:w-1/2 bg-[#0B1524] text-white p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-4">
+                                <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp" alt="ABC Logo" class="h-6 md:h-8 w-auto opacity-90 drop-shadow-md brightness-0 invert">
+                                <span class="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-[#6b9ccb]">ABC Escuela de Conductores</span>
+                            </div>
+                            <h3 class="font-display text-3xl lg:text-4xl font-bold mb-4 leading-tight tracking-tight">Licencia <span class="text-blue-400">Clase B</span><br>para Empresas</h3>
+                            <p class="text-white/80 text-sm md:text-base mb-6 leading-relaxed max-w-xl">
+                                Capacitación en <strong class="text-white font-semibold">modalidad presencial y e-learning</strong>, ideal para la formación inicial o colaboradores que requieren obtener su primera licencia para conducir.
+                            </p>
+                            <div class="space-y-3 mb-8">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Franquicia tributaria SENCE</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Programas adaptados a turnos operativos</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Instructores acreditados</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">En dependencias de la empresa o sede ABC</span>
+                                </div>
+                            </div>
+                            <button @click.prevent="$dispatch('open-contact-modal', { course: 'Clase B' })" class="bg-primary hover:bg-white hover:text-primary border-2 border-primary text-white font-bold py-2.5 px-5 rounded-lg transition-colors w-max uppercase text-xs md:text-sm tracking-wide">
+                                Solicitar propuesta comercial
+                            </button>
+                        </div>
+
+                        {# Right Light Pane #}
+                        <div class="w-full xl:w-1/2 p-5 md:p-8 flex flex-col justify-center gap-4 relative">
+                            {# Top Box #}
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-float border border-gray-100 flex-1 relative z-10 flex flex-col justify-center">
+                                <h4 class="text-lg md:text-xl font-bold text-[#0B1524] mb-5">Beneficios para tu empresa</h4>
+                                <ul class="space-y-3 text-[#4a5568] text-sm font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Optimización de costos vía <strong class="text-[#0B1524] font-bold">franquicia tributaria</strong></span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Formación alineada a normativa vigente</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Flexibilidad horaria para continuidad operacional</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Mayor empleabilidad y desarrollo interno</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Apoyo administrativo en gestión SENCE / OTIC</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            {# Bottom Box #}
+                            <div class="bg-[#f1f5f9] rounded-2xl p-5 text-sm md:text-sm text-[#4a5568] font-medium leading-relaxed border border-gray-200/60 relative z-10">
+                                Ideal para equipos comerciales, técnicos en terreno, prevención de riesgos y servicios generales.
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Slide 2: Curso A2 #}
+                    <div class="w-full flex-shrink-0 flex flex-col xl:flex-row bg-[#f8fafc]">
+                        {# Left Dark Pane #}
+                        <div class="w-full xl:w-1/2 bg-[#0B1524] text-white p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-4">
+                                <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp" alt="ABC Logo" class="h-6 md:h-8 w-auto opacity-90 drop-shadow-md brightness-0 invert">
+                                <span class="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-[#6b9ccb]">ABC Escuela de Conductores</span>
+                            </div>
+                            <h3 class="font-display text-3xl lg:text-4xl font-bold mb-4 leading-tight tracking-tight">Licencia Profesional<br><span class="text-accent">A2</span> para Empresas</h3>
+                            <p class="text-white/80 text-sm md:text-base mb-6 leading-relaxed max-w-xl">
+                                Capacitación especializada en <strong class="text-white font-semibold">modalidad presencial y sincrónica</strong>, diseñada para trabajadores y conductores de transporte de pasajeros institucionales.
+                            </p>
+                            <div class="space-y-3 mb-8">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Franquicia tributaria SENCE</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Programas adaptados a turnos operativos</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Instructores acreditados</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">En dependencias de la empresa o sede ABC</span>
+                                </div>
+                            </div>
+                            <button @click.prevent="$dispatch('open-contact-modal', { course: 'Clase A2' })" class="bg-primary hover:bg-white hover:text-primary border-2 border-primary text-white font-bold py-2.5 px-5 rounded-lg transition-colors w-max uppercase text-xs md:text-sm tracking-wide">
+                                Solicitar propuesta comercial
+                            </button>
+                        </div>
+
+                        {# Right Light Pane #}
+                        <div class="w-full xl:w-1/2 p-5 md:p-8 flex flex-col justify-center gap-4 relative">
+                            {# Top Box #}
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-float border border-gray-100 flex-1 relative z-10 flex flex-col justify-center">
+                                <h4 class="text-lg md:text-xl font-bold text-[#0B1524] mb-5">Beneficios para tu empresa</h4>
+                                <ul class="space-y-3 text-[#4a5568] text-sm font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Optimización de costos vía <strong class="text-[#0B1524] font-bold">franquicia tributaria</strong></span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Formación alineada a normativa vigente</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Flexibilidad horaria para continuidad operacional</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Mayor empleabilidad y desarrollo interno</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Apoyo administrativo en gestión SENCE / OTIC</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            {# Bottom Box #}
+                            <div class="bg-[#f1f5f9] rounded-2xl p-5 text-sm md:text-sm text-[#4a5568] font-medium leading-relaxed border border-gray-200/60 relative z-10">
+                                Ideal para empresas con flotas de transporte, logística de pasajeros, transfers y servicios turísticos.
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Slide 3: Curso A4 #}
+                    <div class="w-full flex-shrink-0 flex flex-col xl:flex-row bg-[#f8fafc]">
+                        {# Left Dark Pane #}
+                        <div class="w-full xl:w-1/2 bg-[#0B1524] text-white p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                            <div class="flex items-center gap-2 mb-4">
+                                <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp" alt="ABC Logo" class="h-6 md:h-8 w-auto opacity-90 drop-shadow-md brightness-0 invert">
+                                <span class="text-[0.6rem] md:text-xs font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] text-[#6b9ccb]">ABC Escuela de Conductores</span>
+                            </div>
+                            <h3 class="font-display text-3xl lg:text-4xl font-bold mb-4 leading-tight tracking-tight">Licencia Profesional<br><span class="text-accent">A4</span> para Empresas</h3>
+                            <p class="text-white/80 text-sm md:text-base mb-6 leading-relaxed max-w-xl">
+                                Capacitación en <strong class="text-white font-semibold">modalidad presencial y sincrónica</strong>, diseñada para trabajadores de carga pesada y nuevos conductores profesionales.
+                            </p>
+                            <div class="space-y-3 mb-8">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Franquicia tributaria SENCE</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Programas adaptados a turnos operativos</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">Instructores acreditados</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                    <span class="text-white/90 font-medium text-sm md:text-base">En dependencias de la empresa o sede ABC</span>
+                                </div>
+                            </div>
+                            <button @click.prevent="$dispatch('open-contact-modal', { course: 'Clase A4' })" class="bg-primary hover:bg-white hover:text-primary border-2 border-primary text-white font-bold py-2.5 px-5 rounded-lg transition-colors w-max uppercase text-xs md:text-sm tracking-wide">
+                                Solicitar propuesta comercial
+                            </button>
+                        </div>
+
+                        {# Right Light Pane #}
+                        <div class="w-full xl:w-1/2 p-5 md:p-8 flex flex-col justify-center gap-4 relative">
+                            {# Top Box #}
+                            <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-float border border-gray-100 flex-1 relative z-10 flex flex-col justify-center">
+                                <h4 class="text-lg md:text-xl font-bold text-[#0B1524] mb-5">Beneficios para tu empresa</h4>
+                                <ul class="space-y-3 text-[#4a5568] text-sm font-medium">
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Optimización de costos vía <strong class="text-[#0B1524] font-bold">franquicia tributaria</strong></span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Formación alineada a normativa vigente</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Flexibilidad horaria para continuidad operacional</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Mayor empleabilidad y desarrollo interno</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <span class="text-[#0B1524] font-black mt-0.5">•</span>
+                                        <span>Apoyo administrativo en gestión SENCE / OTIC</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            {# Bottom Box #}
+                            <div class="bg-[#f1f5f9] rounded-2xl p-5 text-sm md:text-sm text-[#4a5568] font-medium leading-relaxed border border-gray-200/60 relative z-10">
+                                Ideal para empresas con flotas de transporte pesado, retail, minería y distribución logística.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            {# Curso A2/A4 #}
-            <div class="bg-white p-6 sm:p-8 md:p-10 rounded-2xl md:rounded-4xl shadow-float border border-accent/20 flex flex-col h-full relative overflow-hidden group hover:border-accent/50 transition-colors">
-                <div class="absolute right-0 top-0 w-32 h-32 bg-accent/5 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
 
-                <h3 class="font-display font-bold text-3xl text-text-main mb-2">Licencias Profesionales A2 y A4</h3>
-                <p class="text-sm font-bold text-muted uppercase tracking-widest mb-6">Presencial y E-learning Sincrónico</p>
-                
-                <p class="text-secondary-text mb-8 leading-relaxed">
-                    Capacitación especializada en transporte de pasajeros (A2) y transporte de carga (A4). Programas enfocados en la seguridad vial corporativa y conducción profesional.
-                </p>
-                
-                <div class="mt-auto transform transition-transform group-hover:translate-x-1">
-                    <span class="inline-flex items-center gap-2 text-accent font-bold bg-accent/10 px-4 py-2 rounded-xl">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Código SENCE Activo
-                    </span>
-                </div>
+            {# Controles: Flechas Laterales #}
+            <button @click="activeSlide = activeSlide > 0 ? activeSlide - 1 : slides - 1" class="absolute top-1/2 -left-3 md:-left-6 p-2 rounded-full bg-white shadow-lg border border-gray-100 text-primary hover:bg-primary hover:text-white transition-colors transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center pointer-events-auto">
+                <svg fill="none" class="w-5 h-5 md:w-6 md:h-6" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button @click="activeSlide = activeSlide < slides - 1 ? activeSlide + 1 : 0" class="absolute top-1/2 -right-3 md:-right-6 p-2 rounded-full bg-white shadow-lg border border-gray-100 text-primary hover:bg-primary hover:text-white transition-colors transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center pointer-events-auto">
+                <svg fill="none" class="w-5 h-5 md:w-6 md:h-6" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            {# Indicadores inferiores #}
+            <div class="mt-2 md:mt-4 flex justify-center gap-3">
+                <button @click="activeSlide = 0" 
+                        :class="activeSlide === 0 ? 'bg-primary text-white w-16 shadow-md' : 'bg-gray-200 text-gray-500 w-8 hover:bg-gray-300'" 
+                        class="h-8 rounded-full font-bold text-xs transition-all duration-500 ease-out flex items-center justify-center overflow-hidden">
+                    B
+                </button>
+                <button @click="activeSlide = 1" 
+                        :class="activeSlide === 1 ? 'bg-primary text-white w-16 shadow-md' : 'bg-gray-200 text-gray-500 w-8 hover:bg-gray-300'" 
+                        class="h-8 rounded-full font-bold text-xs transition-all duration-500 ease-out flex items-center justify-center overflow-hidden">
+                    A2
+                </button>
+                <button @click="activeSlide = 2" 
+                        :class="activeSlide === 2 ? 'bg-primary text-white w-16 shadow-md' : 'bg-gray-200 text-gray-500 w-8 hover:bg-gray-300'" 
+                        class="h-8 rounded-full font-bold text-xs transition-all duration-500 ease-out flex items-center justify-center overflow-hidden">
+                    A4
+                </button>
             </div>
         </div>
+
     </section>
 
     {# ─── Call to Action WhatsApp ─── #}
@@ -124,7 +352,7 @@
                     Si tu empresa necesita capacitar conductores o formar nuevos colaboradores, escríbenos y te asesoramos con una propuesta a medida.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-                    <a href="https://wa.me/56912345678?text=Hola,%20me%20comunico%20desde%20el%20sitio%20web.%20Quisiera%20asesoría%20sobre%20cursos%20para%20empresas%20con%20franquicia%20SENCE." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-[#25D366] text-white px-8 h-14 rounded-xl font-bold hover:brightness-110 transition-all shadow-xl shadow-[#25D366]/30 uppercase tracking-widest gap-3 text-base group">
+                    <a href="https://wa.me/56992199314?text=Hola,%20me%20comunico%20desde%20el%20sitio%20web.%20Quisiera%20asesoría%20sobre%20cursos%20para%20empresas." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-[#25D366] text-white px-8 h-14 rounded-xl font-bold hover:brightness-110 transition-all shadow-xl shadow-[#25D366]/30 uppercase tracking-widest gap-3 text-base group">
                         <svg class="w-6 h-6 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                         Háblanos por WhatsApp
                     </a>
@@ -171,7 +399,6 @@
                     const eased = 1 - Math.pow(1 - progress, 4);
                     this.scale      = 0.55 + (eased * 0.45);
                     this.radius     = 48 - (eased * 48);
-                    // Adjust width for desktop screens slightly better
                     this.maxW       = window.innerWidth > 768 ? 60 + (eased * 40) : 90 + (eased * 10);
                     this.contentOpacity = eased;
                 }

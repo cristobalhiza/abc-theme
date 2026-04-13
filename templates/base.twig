@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ wp_title }}</title>
-    <link rel="stylesheet" href="{{ site.theme.uri }}/style.css?v={{ "now"|date('U') }}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <link rel="stylesheet" href="{{ site.theme.uri }}/style.css?v=1.0.2">
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script> 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -15,9 +16,9 @@
 <body class="bg-background-light text-text-main font-body antialiased selection:bg-primary selection:text-white">
     {% include 'components/navbar.twig' %}
 
-    <div class="min-h-screen">
+    <main id="content" class="min-h-screen">
         {% block content %}{% endblock %}
-    </div>
+    </main>
     {% include 'components/contact-modal.twig' %}
     {% include 'components/convenios-modal.twig' %}
 

@@ -4,7 +4,14 @@
 {% block content %}
 {% set img_principal = img_secundaria ?: (post.thumbnail ? post.thumbnail.src : null) %}
 
-<main class="max-w-7xl mx-auto px-6 pt-24 pb-16">
+<article class="max-w-7xl mx-auto px-6 pt-24 pb-16" itemscope itemtype="https://schema.org/Course">
+    
+    {# Migas de Pan (Rank Math compatible) #}
+    {% if function('rank_math_the_breadcrumbs') %}
+        <nav class="mb-6 text-sm text-muted font-medium rank-math-breadcrumbs">
+            {{ function('rank_math_the_breadcrumbs') }}
+        </nav>
+    {% endif %}
     
     {# Header del Curso #}
     <div class="mb-8 md:mb-12">
@@ -12,7 +19,7 @@
             <span class="h-1 w-10 bg-primary rounded-full"></span>
             <span class="text-xs font-bold uppercase tracking-[0.2em]">Detalle del Curso</span>
         </div>
-        <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-text-main font-display leading-[1.1]">
+        <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-text-main font-display leading-[1.1]" itemprop="name">
             {{ post.title }}
         </h1>
     </div>
@@ -210,5 +217,5 @@
             
         </aside>
     </div>
-</main>
+</article>
 {% endblock %}
