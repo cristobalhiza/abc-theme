@@ -7,7 +7,7 @@
 <article class="max-w-7xl mx-auto px-6 pt-24 pb-16" itemscope itemtype="https://schema.org/Course">
     
     {# Migas de Pan (Rank Math compatible) #}
-    {% if function('rank_math_the_breadcrumbs') %}
+    {% if function('function_exists', 'rank_math_the_breadcrumbs') %}
         <nav class="mb-6 text-sm text-muted font-medium rank-math-breadcrumbs">
             {{ function('rank_math_the_breadcrumbs') }}
         </nav>
