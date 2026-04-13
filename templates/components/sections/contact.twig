@@ -132,7 +132,9 @@
                                         <svg x-show="formData.course.includes(option.value)" class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <input type="checkbox" :value="option.value" x-model="formData.course" @change="errors.course = formData.course.length === 0" class="sr-only">
-                                    <span class="text-sm font-medium text-text-main" x-text="option.label"></span>
+                                    <span class="text-sm font-medium transition-colors" 
+                                          :class="option.comingSoon ? 'text-[#888] italic px-1' : 'text-text-main'" 
+                                          x-text="option.label"></span>
                                 </label>
                             </template>
                         </div>
@@ -236,7 +238,8 @@ document.addEventListener('alpine:init', () => {
         courseOptions: [
             { value: 'Clase B', label: 'Licencia Clase B' },
             { value: 'Clase A2', label: 'Profesional A2' },
-            { value: 'Clase A4', label: 'Profesional A4' }
+            { value: 'Clase A4', label: 'Profesional A4' },
+            { value: 'Clase D', label: 'Operador Grúa Clase D (Próximamente)', comingSoon: true }
         ],
         errors: { phone: false, course: false, turnstile: false },
         isLoading: false,
@@ -245,6 +248,36 @@ document.addEventListener('alpine:init', () => {
         _turnstileWidgetId: null,
 
         init() {
+            // Preselección de curso desde eventos externos
+            window.addEventListener('preselect-course', (e) => {
+                const requested = e.detail;
+                if (!requested) return;
+
+                const normalize = (str) => String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                
+                // Convertir a array si no lo es
+                const requestedItems = Array.isArray(requested) ? requested : [requested];
+                const selectedValues = [];
+
+                requestedItems.forEach(item => {
+                    const normalizedRequested = normalize(item);
+                    const option = this.courseOptions.find(opt => {
+                        const v = normalize(opt.value);
+                        const l = normalize(opt.label);
+                        return normalizedRequested.includes(v) || v.includes(normalizedRequested) ||
+                               normalizedRequested.includes(l) || l.includes(normalizedRequested);
+                    });
+                    if (option && !selectedValues.includes(option.value)) {
+                        selectedValues.push(option.value);
+                    }
+                });
+
+                if (selectedValues.length > 0) {
+                    this.formData.course = selectedValues;
+                    this.errors.course = false;
+                }
+            });
+
             this._renderTurnstile();
         },
 

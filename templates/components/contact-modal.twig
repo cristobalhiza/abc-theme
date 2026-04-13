@@ -34,7 +34,7 @@
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
 
-            <div class="text-center mb-8 mt-2">
+            <div class="text-center mb-4 mt-2">
                 <h2 class="text-3xl font-bold tracking-tight font-display text-text-main mb-2">Inicia tu Aprendizaje</h2>
                 <p class="text-[#666] text-sm font-medium">Déjanos tus datos y te contactaremos para tu matrícula.</p>
             </div>
@@ -50,11 +50,11 @@
             </div>
 
             {# Formulario #}
-            <form x-show="!isSuccess" x-transition.opacity class="space-y-5">
+            <form x-show="!isSuccess" x-transition.opacity class="space-y-4">
                 
                 <div x-show="serverError" x-cloak class="p-4 bg-red-50 text-red-600 text-sm font-medium rounded-xl border border-red-100" x-text="serverError"></div>
 
-                <div class="space-y-1.5">
+                <div class="space-y-1">
                     <label class="text-xs font-bold text-text-main ml-1">Nombre Completo</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-1.5">
+                <div class="space-y-1">
                     <label class="text-xs font-bold text-text-main ml-1">Correo Electrónico</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-muted">
@@ -76,7 +76,7 @@
                     </div>
                 </div>
 
-                <div class="space-y-1.5">
+                <div class="space-y-1">
                     <label class="text-xs font-bold text-text-main ml-1">Teléfono</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2" :class="errors.phone ? 'text-red-500' : 'text-muted'">
@@ -92,7 +92,7 @@
                     <p x-show="errors.phone" class="text-xs text-red-500 ml-1 mt-1">Por favor, ingresa un número válido.</p>
                 </div>
 
-                <div class="space-y-1.5" x-data="{ open: false }" @click.outside="open = false">
+                <div class="space-y-1" x-data="{ open: false }" @click.outside="open = false">
                     <label class="text-xs font-bold text-text-main ml-1">Cursos de Interés</label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 z-10" :class="errors.course ? 'text-red-500' : 'text-muted'">
@@ -108,7 +108,7 @@
                             </template>
                             
                             <template x-for="val in formData.course" :key="val">
-                                <span class="inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-2.5 py-1.5 rounded-lg z-10">
+                                <span class="inline-flex items-center gap-1 bg-primary text-white text-xs font-bold px-2.5 py-1 rounded-lg z-10">
                                     <span x-text="getCourseLabel(val)"></span>
                                     <button type="button" @click.stop="formData.course = formData.course.filter(c => c !== val); if(formData.course.length === 0) errors.course = true;" class="hover:text-red-200 transition-colors focus:outline-none">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -138,7 +138,9 @@
                                         <svg x-show="formData.course.includes(option.value)" class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                     </div>
                                     <input type="checkbox" :value="option.value" x-model="formData.course" @change="errors.course = formData.course.length === 0" class="sr-only">
-                                    <span class="text-sm font-medium text-text-main" x-text="option.label"></span>
+                                    <span class="text-sm font-medium transition-colors" 
+                                          :class="option.comingSoon ? 'text-[#888] italic px-1' : 'text-text-main'" 
+                                          x-text="option.label"></span>
                                 </label>
                             </template>
                         </div>
@@ -186,7 +188,8 @@ document.addEventListener('alpine:init', () => {
         courseOptions: [
             { value: 'Clase B', label: 'Licencia Clase B' },
             { value: 'Clase A2', label: 'Profesional A2' },
-            { value: 'Clase A4', label: 'Profesional A4' }
+            { value: 'Clase A4', label: 'Profesional A4' },
+            { value: 'Clase D', label: 'Operador Grúa Clase D (Próximamente)', comingSoon: true }
         ],
         errors: { phone: false, course: false, turnstile: false },
         isLoading: false,
@@ -197,36 +200,34 @@ document.addEventListener('alpine:init', () => {
         init() {
             // Preselección de curso desde eventos externos
             window.addEventListener('preselect-course', (e) => {
-                const requestedCourse = e.detail;
-                if (!requestedCourse) return;
+                const requested = e.detail;
+                if (!requested) return;
 
-                const normalize = (str) => {
-                    return String(str)
-                        .toLowerCase()
-                        .normalize("NFD")
-                        .replace(/[\u0300-\u036f]/g, "")
-                        .trim();
-                };
+                const normalize = (str) => String(str).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+                
+                // Convertir a array si no lo es
+                const requestedItems = Array.isArray(requested) ? requested : [requested];
+                const selectedValues = [];
 
-                const normalizedRequested = normalize(requestedCourse);
-
-                const option = this.courseOptions.find(opt => {
-                    const normalizedVal = normalize(opt.value);
-                    const normalizedLabel = normalize(opt.label);
-                    
-                    return normalizedRequested.includes(normalizedVal) || 
-                           normalizedVal.includes(normalizedRequested) ||
-                           normalizedRequested.includes(normalizedLabel) ||
-                           normalizedLabel.includes(normalizedRequested);
+                requestedItems.forEach(item => {
+                    const normalizedRequested = normalize(item);
+                    const option = this.courseOptions.find(opt => {
+                        const v = normalize(opt.value);
+                        const l = normalize(opt.label);
+                        return normalizedRequested.includes(v) || v.includes(normalizedRequested) ||
+                               normalizedRequested.includes(l) || l.includes(normalizedRequested);
+                    });
+                    if (option && !selectedValues.includes(option.value)) {
+                        selectedValues.push(option.value);
+                    }
                 });
 
-                if (option) {
-                    this.formData.course = [option.value];
+                if (selectedValues.length > 0) {
+                    this.formData.course = selectedValues;
                     this.errors.course = false;
                 }
             });
 
-            // Renderizar Turnstile al abrir el modal (lazy)
             this._renderTurnstile();
         },
 
