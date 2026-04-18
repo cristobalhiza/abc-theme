@@ -63,7 +63,11 @@ function abc_handle_contact_submit(WP_REST_Request $request)
         return new WP_REST_Response(array('message' => 'Por favor, completa todos los campos con datos válidos.'), 400);
     }
 
-    $to      = 'cristobalhiza@gmail.com';
+    $to = carbon_get_theme_option('abc_email_destino');
+    if (empty($to)) {
+        $to = 'cristobalhiza@gmail.com';
+    }
+
     $type_label = $is_company ? 'Empresa' : 'Persona';
     $subject = 'Nuevo Contacto Web: ' . $course . ' - ' . $name . ' (' . $type_label . ')';
 
@@ -109,11 +113,13 @@ function abc_setup_resend_smtp($phpmailer)
     $phpmailer->Username   = 'resend';
     $phpmailer->Password   = RESEND_API_KEY;
 
-    $phpmailer->setFrom('contacto@notificaciones.abcconduccion.cl', 'ABC Escuela de Conductores');
-    $phpmailer->SMTPDebug = 3;
-    $phpmailer->Debugoutput = function ($str, $level) {
-        error_log('SMTP TRANSACCIÓN: ' . $str);
-    };
+    $from_name = carbon_get_theme_option('abc_nombre_remitente');
+    if (empty($from_name)) {
+        $from_name = 'ABC Escuela de Conductores';
+    }
+
+    $phpmailer->setFrom('contacto@notificaciones.abcconduccion.cl', $from_name);
+    $phpmailer->SMTPDebug = 0;
 }
 
 // Capturador de errores globales de correo

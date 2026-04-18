@@ -1,7 +1,6 @@
 <?php
 /**
  * Controlador de la vista individual de Cursos
- * Ubicación: single-cursos.php
  */
 
 $timber_post = Timber::get_post();
@@ -17,7 +16,7 @@ if (!$timber_post) {
 $context = Timber::context();
 $context['post'] = $timber_post;
 
-// Extraemos los metadatos de Carbon Fields de forma segura
+// Metadatos de Carbon Fields
 $post_id = $timber_post->ID;
 $context['precio_normal'] = carbon_get_post_meta( $post_id, 'abc_precio_normal' );
 $context['precio_oferta'] = carbon_get_post_meta( $post_id, 'abc_precio_oferta' );

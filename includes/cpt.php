@@ -3,6 +3,9 @@
 use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
+/**
+ * Registro de Custom Post Types
+ */
 function abc_register_cursos_cpt()
 {
     $labels = [
@@ -28,10 +31,11 @@ function abc_register_cursos_cpt()
 }
 add_action('init', 'abc_register_cursos_cpt');
 
-add_action('carbon_fields_register_fields', 'abc_attach_curso_meta');
+/**
+ * Registro de Campos Personalizados (Carbon Fields)
+ */
 function abc_attach_curso_meta()
 {
-
     Container::make('post_meta', 'Detalles Comerciales y Técnicos')
         ->where('post_type', '=', 'courses')
         ->set_context('normal')
@@ -43,8 +47,7 @@ function abc_attach_curso_meta()
             Field::make('text', 'abc_precio_oferta', 'Precio Oferta ($)')
                 ->set_attribute('type', 'number')
                 ->set_width(50),
-            Field::make('rich_text', 'abc_objetivos', 'Objetivos del Curso')
-                ->set_help_text('Escribe los objetivos.'),
+            Field::make('rich_text', 'abc_objetivos', 'Objetivos del Curso'),
             Field::make('complex', 'abc_resoluciones', 'Resoluciones y Certificaciones')
                 ->set_layout('tabbed-horizontal')
                 ->setup_labels(array(
@@ -53,7 +56,6 @@ function abc_attach_curso_meta()
                 ))
                 ->add_fields(array(
                     Field::make('text', 'titulo', 'Nombre del Documento')
-                        ->set_help_text('Ej: Resolución 3462/2020, Certificado de Calidad, etc.')
                         ->set_width(50),
                     Field::make('file', 'archivo', 'Archivo PDF')
                         ->set_value_type('url')
@@ -69,10 +71,8 @@ function abc_attach_curso_meta()
                 ->set_collapsed(true)
                 ->add_fields(array(
                     Field::make('text', 'etiqueta', 'Etiqueta')
-                        ->set_help_text('Ej: Módulo 1, Prueba en línea, Práctica')
                         ->set_width(30),
                     Field::make('text', 'contenido', 'Contenido / Detalle')
-                        ->set_help_text('Ej: Terminología Vial y Licencias.')
                         ->set_width(70),
                 )),
             Field::make('complex', 'abc_descargas', 'Archivos de Descarga Adicionales')
@@ -91,19 +91,27 @@ function abc_attach_curso_meta()
         ->set_priority('low')
         ->add_fields(array(
             Field::make('image', 'abc_img_secundaria', 'Imagen Secundaria')
-                ->set_value_type('url')
-                ->set_help_text('Imagen de apoyo para la vista individual.'),
+                ->set_value_type('url'),
             Field::make('text', 'abc_woo_id', 'ID WooCommerce')
-                ->set_attribute('type', 'number')
-                ->set_help_text('ID del producto para pasarela de pago.'),
+                ->set_attribute('type', 'number'),
         ));
 
-    // Panel global: Opciones de la Escuela
     Container::make('theme_options', 'Opciones de la Escuela')
         ->set_icon('dashicons-building')
         ->add_fields(array(
+            Field::make('header_import', 'config_contacto_header', 'Configuración de Contacto'),
+            Field::make('text', 'abc_email_destino', 'Email de Destino')
+                ->set_help_text('A este correo llegarán las consultas del formulario.')
+                ->set_attribute('placeholder', 'ejemplo@abcconduccion.cl')
+                ->set_width(50),
+            Field::make('text', 'abc_nombre_remitente', 'Nombre del Remitente')
+                ->set_help_text('Nombre que aparecerá como emisor del correo.')
+                ->set_attribute('placeholder', 'ABC Escuela de Conductores')
+                ->set_width(50),
+            
+            Field::make('header_import', 'config_aprobados_header', 'Galería de Alumnos'),
             Field::make('media_gallery', 'abc_fotos_alumnos', 'Fotografías de Alumnos Aprobados')
                 ->set_type(array('image'))
-                ->set_help_text('Sube aquí las fotos de los alumnos con los vehículos. Aparecerán en el carrusel de la página de inicio.')
         ));
 }
+add_action('carbon_fields_register_fields', 'abc_attach_curso_meta');
