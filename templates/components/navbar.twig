@@ -10,8 +10,11 @@
         
         {# Logo #}
         <a href="{{ site.url }}" class="flex items-center transition-transform hover:scale-105 relative z-[60]">
-            <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp?v={{ "now"|date('U') }}" 
+            <img src="{{ theme.link }}/assets/logos/ABC-logo-nobg.webp" 
                  alt="Logo ABC Academia de Conducción" 
+                 width="160"
+                 height="56"
+                 fetchpriority="high"
                  :class="isScrolled ? 'h-9 md:h-10' : 'h-11 md:h-14'"
                  class="w-auto transition-all duration-500 object-contain" />
         </a>

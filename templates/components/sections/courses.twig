@@ -31,7 +31,13 @@
                     {# Imagen y Badge Superior #}
                     <div class="h-56 relative overflow-hidden bg-gray-200">
                         {% if course.thumbnail %}
-                            <img src="{{ course.thumbnail.src }}" alt="{{ course.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <img src="{{ course.thumbnail.src }}" 
+                                 alt="{{ course.title }}" 
+                                 loading="lazy" 
+                                 decoding="async"
+                                 width="400"
+                                 height="225"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         {% endif %}
                         
                         <div class="absolute top-4 left-4 px-4 py-1 rounded-full text-[0.625rem] font-bold uppercase tracking-widest shadow-md {{ is_primary ? 'bg-accent text-white' : 'bg-primary text-white' }}">

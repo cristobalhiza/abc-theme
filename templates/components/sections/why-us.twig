@@ -75,7 +75,14 @@
                  
                  <!-- Contenedor interno de la imagen -->
                 <div class="rounded-2xl overflow-hidden relative h-64 md:h-auto md:aspect-video shadow-inner group-hover/img:shadow-lg transition-all duration-500">
-                    <img src="{{ step.img }}" alt="{{ step.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000" :class="active ? 'scale-105' : 'scale-100'">
+                    <img src="{{ step.img }}" 
+                         alt="{{ step.title }}" 
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000" 
+                         :class="active ? 'scale-105' : 'scale-100'"
+                         loading="lazy"
+                         decoding="async"
+                         width="600"
+                         height="400">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent transition-opacity duration-500" :class="active ? 'opacity-80' : 'opacity-40'"></div>
                     
                     <div class="absolute bottom-4 left-4 flex items-center gap-3 transition-transform duration-500" :class="active ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'">
