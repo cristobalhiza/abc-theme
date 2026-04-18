@@ -99,7 +99,8 @@ function abc_attach_curso_meta()
     Container::make('theme_options', 'Opciones de la Escuela')
         ->set_icon('dashicons-building')
         ->add_fields(array(
-            Field::make('header_import', 'config_contacto_header', 'Configuración de Contacto'),
+            Field::make('html', 'config_contacto_header')
+                ->set_html('<h4>Configuración de Contacto</h4>'),
             Field::make('text', 'abc_email_destino', 'Email de Destino')
                 ->set_help_text('A este correo llegarán las consultas del formulario.')
                 ->set_attribute('placeholder', 'ejemplo@abcconduccion.cl')
@@ -109,7 +110,8 @@ function abc_attach_curso_meta()
                 ->set_attribute('placeholder', 'ABC Escuela de Conductores')
                 ->set_width(50),
             
-            Field::make('header_import', 'config_aprobados_header', 'Galería de Alumnos'),
+            Field::make('html', 'config_aprobados_header')
+                ->set_html('<h4>Galería de Alumnos</h4>'),
             Field::make('media_gallery', 'abc_fotos_alumnos', 'Fotografías de Alumnos Aprobados')
                 ->set_type(array('image'))
         ));

@@ -45,33 +45,24 @@ function abc_handle_contact_submit(WP_REST_Request $request)
     }
 
     // ---------------------------------------------------------------
-    // Procesamiento del formulario
+    // Procesamiento y envío con wp_remote_post a la API de Resend
     // ---------------------------------------------------------------
     $name   = sanitize_text_field($params['name'] ?? '');
     $email  = sanitize_email($params['email'] ?? '');
     $phone  = sanitize_text_field($params['phone'] ?? '');
     $is_company = !empty($params['isCompany']);
-    $course_param = $params['course'] ?? '';
-    if (is_array($course_param)) {
-        $course_clean = array_map('sanitize_text_field', $course_param);
-        $course = implode(', ', $course_clean);
-    } else {
-        $course = sanitize_text_field($course_param);
+    $course = is_array($params['course'] ?? '') ? implode(', ', array_map('sanitize_text_field', $params['course'])) : sanitize_text_field($params['course'] ?? '');
+
+    if (empty($name) || empty($email) || !is_email($email) || empty($phone)) {
+        return new WP_REST_Response(array('message' => 'Completa todos los campos.'), 400);
     }
 
-    if (empty($name) || empty($email) || ! is_email($email) || empty($phone)) {
-        return new WP_REST_Response(array('message' => 'Por favor, completa todos los campos con datos válidos.'), 400);
-    }
-
-    $to = carbon_get_theme_option('abc_email_destino');
-    if (empty($to)) {
-        $to = 'cristobalhiza@gmail.com';
-    }
-
+    $to = carbon_get_theme_option('abc_email_destino') ?: 'cristobalhiza@gmail.com';
     $type_label = $is_company ? 'Empresa' : 'Persona';
-    $subject = 'Nuevo Contacto Web: ' . $course . ' - ' . $name . ' (' . $type_label . ')';
+    $subject = "Nuevo Contacto Web: $course - $name ($type_label)";
+    $from_name = carbon_get_theme_option('abc_nombre_remitente') ?: 'ABC Escuela de Conductores';
 
-    $body = "
+    $html_content = "
         <h2>Nuevo prospecto desde el sitio web</h2>
         <p><strong>Nombre:</strong> {$name}</p>
         <p><strong>Teléfono:</strong> {$phone}</p>
@@ -80,51 +71,36 @@ function abc_handle_contact_submit(WP_REST_Request $request)
         <p><strong>Tipo:</strong> {$type_label}</p>
     ";
 
-    $headers = array(
-        'Content-Type: text/html; charset=UTF-8',
-        'Reply-To: ' . $name . ' <' . $email . '>'
-    );
+    // Construcción de la petición HTTP nativa
+    $response = wp_remote_post('https://api.resend.com/emails', array(
+        'method'      => 'POST',
+        'timeout'     => 15,
+        'headers'     => array(
+            'Authorization' => 'Bearer ' . RESEND_API_KEY,
+            'Content-Type'  => 'application/json',
+        ),
+        'body'        => wp_json_encode(array(
+            'from'     => "$from_name <contacto@notificaciones.abcconduccion.cl>",
+            'to'       => [$to],
+            'subject'  => $subject,
+            'reply_to' => "$name <$email>",
+            'html'     => $html_content,
+        ))
+    ));
 
-    global $abc_mail_error;
-    $sent = wp_mail($to, $subject, $body, $headers);
+    if (is_wp_error($response)) {
+        error_log('Error crítico wp_remote_post (Resend): ' . $response->get_error_message());
+        return new WP_REST_Response(array('message' => 'Error de conexión con el servidor de correo.'), 500);
+    }
 
-    if ($sent) {
+    $response_code = wp_remote_retrieve_response_code($response);
+    $response_body = wp_remote_retrieve_body($response);
+
+    if ($response_code === 200) {
         return new WP_REST_Response(array('message' => 'Mensaje enviado exitosamente.'), 200);
     } else {
-        $error_msg = $abc_mail_error ? $abc_mail_error : 'Error desconocido de conexión SMTP.';
-        return new WP_REST_Response(array('message' => 'Resend dice: ' . $error_msg), 500);
+        // Registramos el error exacto de la API de Resend para debug
+        error_log("Error Resend API (HTTP $response_code): " . print_r($response_body, true));
+        return new WP_REST_Response(array('message' => 'El servicio de correo rechazó el envío. Intenta más tarde.'), 500);
     }
 }
-
-// =======================================================================
-// 2. INTERCEPCIÓN DE SMTP PARA USAR RESEND GLOBALMENTE
-// =======================================================================
-
-add_action('phpmailer_init', 'abc_setup_resend_smtp');
-function abc_setup_resend_smtp($phpmailer)
-{
-    $phpmailer->isSMTP();
-    $phpmailer->Host       = 'smtp.resend.com';
-    $phpmailer->SMTPAuth   = true;
-    $phpmailer->Port       = 465;
-    $phpmailer->SMTPSecure = 'ssl';
-
-    // Credenciales de Resend
-    $phpmailer->Username   = 'resend';
-    $phpmailer->Password   = RESEND_API_KEY;
-
-    $from_name = carbon_get_theme_option('abc_nombre_remitente');
-    if (empty($from_name)) {
-        $from_name = 'ABC Escuela de Conductores';
-    }
-
-    $phpmailer->setFrom('contacto@notificaciones.abcconduccion.cl', $from_name);
-    $phpmailer->SMTPDebug = 0;
-}
-
-// Capturador de errores globales de correo
-global $abc_mail_error;
-add_action('wp_mail_failed', function ($wp_error) {
-    global $abc_mail_error;
-    $abc_mail_error = $wp_error->get_error_message();
-});
