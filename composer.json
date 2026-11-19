@@ -1,6 +1,16 @@
 {
+    "name": "cristobalhiza/abc-theme",
+    "description": "Tema a medida de ABC Conducción (Timber + Twig + Carbon Fields + Tailwind).",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
     "require": {
-        "timber/timber": "^2.3",
-        "htmlburger/carbon-fields": "^3.6"
+        "php": ">=8.1",
+        "timber/timber": "^2.5",
+        "twig/twig": "^3.30",
+        "htmlburger/carbon-fields": "^3.6.11"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
     }
 }

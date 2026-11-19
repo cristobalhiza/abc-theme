@@ -16,7 +16,7 @@ add_action('login_enqueue_scripts', function() {
             background-color: #f8fafc;
         }
         #login h1 a, .login h1 a {
-            background-image: url('<?php echo $logo_url; ?>');
+            background-image: url('<?php echo esc_url($logo_url); ?>');
             height: 100px;
             width: 100%;
             background-size: contain;
@@ -99,14 +99,15 @@ add_filter('authenticate', function($user, $username, $password) {
     }
 
     if (!$secret_key) {
-        return $user; // No bloquear si la clave no está configurada
+        // Fail-closed. Recuperación: definir TURNSTILE_SECRET_KEY en wp-config.php.
+        return new WP_Error('turnstile_config', '<strong>ERROR</strong>: Verificación de seguridad no configurada.');
     }
 
     $verify_response = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
         'body' => array(
             'secret'   => $secret_key,
             'response' => $turnstile_response,
-            'remoteip' => $_SERVER['REMOTE_ADDR']
+            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
         )
     ));
 

@@ -14,7 +14,7 @@ add_action('after_setup_theme', function() {
 
 // Encolar scripts y estilos
 add_action('wp_enqueue_scripts', function() {
-    wp_enqueue_style('abc-style', get_template_directory_uri() . '/style.css', array(), '1.14.0');
+    wp_enqueue_style('abc-style', get_template_directory_uri() . '/style.css', array(), wp_get_theme()->get('Version'));
     
     wp_enqueue_script('abc-contact-form', get_template_directory_uri() . '/assets/js/contact-form.js', array(), '1.0.0', true);
     

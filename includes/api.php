@@ -24,24 +24,27 @@ function abc_handle_contact_submit(WP_REST_Request $request)
         return new WP_REST_Response(array('message' => 'Falta la verificación de seguridad. Intenta nuevamente.'), 400);
     }
 
-    if (defined('TURNSTILE_SECRET_KEY') && TURNSTILE_SECRET_KEY) {
-        $verify_response = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
-            'body' => array(
-                'secret'   => TURNSTILE_SECRET_KEY,
-                'response' => $turnstile_token,
-                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
-            ),
-        ));
+    if (!defined('TURNSTILE_SECRET_KEY') || !TURNSTILE_SECRET_KEY) {
+        error_log('abc-theme: TURNSTILE_SECRET_KEY no definida, formulario bloqueado.');
+        return new WP_REST_Response(array('message' => 'Formulario temporalmente no disponible.'), 503);
+    }
 
-        if (is_wp_error($verify_response)) {
-            return new WP_REST_Response(array('message' => 'Error al verificar la seguridad. Intenta nuevamente.'), 500);
-        }
+    $verify_response = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array(
+        'body' => array(
+            'secret'   => TURNSTILE_SECRET_KEY,
+            'response' => $turnstile_token,
+            'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        ),
+    ));
 
-        $verify_body = json_decode(wp_remote_retrieve_body($verify_response), true);
+    if (is_wp_error($verify_response)) {
+        return new WP_REST_Response(array('message' => 'Error al verificar la seguridad. Intenta nuevamente.'), 500);
+    }
 
-        if (empty($verify_body['success'])) {
-            return new WP_REST_Response(array('message' => 'Verificación de seguridad fallida. Intenta nuevamente.'), 403);
-        }
+    $verify_body = json_decode(wp_remote_retrieve_body($verify_response), true);
+
+    if (empty($verify_body['success'])) {
+        return new WP_REST_Response(array('message' => 'Verificación de seguridad fallida. Intenta nuevamente.'), 403);
     }
 
     // ---------------------------------------------------------------
@@ -64,10 +67,10 @@ function abc_handle_contact_submit(WP_REST_Request $request)
 
     $html_content = "
         <h2>Nuevo prospecto desde el sitio web</h2>
-        <p><strong>Nombre:</strong> {$name}</p>
-        <p><strong>Teléfono:</strong> {$phone}</p>
-        <p><strong>Email:</strong> {$email}</p>
-        <p><strong>Curso de interés:</strong> {$course}</p>
+        <p><strong>Nombre:</strong> " . esc_html($name) . "</p>
+        <p><strong>Teléfono:</strong> " . esc_html($phone) . "</p>
+        <p><strong>Email:</strong> " . esc_html($email) . "</p>
+        <p><strong>Curso de interés:</strong> " . esc_html($course) . "</p>
         <p><strong>Tipo:</strong> {$type_label}</p>
     ";
 

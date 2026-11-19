@@ -17,12 +17,19 @@ function get_google_reviews() {
     $api_key  = defined('PLACES_API_KEY') ? PLACES_API_KEY : '';
     $place_id = defined('PLACES_ID')      ? PLACES_ID      : '';
 
+    // Ante cualquier fallo se sirve la última copia buena y se reintenta en 1 hora (no se quema cuota).
+    $fallback = function () use ($transient_key) {
+        $last = get_option('abc_google_reviews_last', []);
+        set_transient($transient_key, $last, HOUR_IN_SECONDS);
+        return $last;
+    };
+
     if (empty($api_key) || empty($place_id)) {
-        return [];
+        return $fallback();
     }
 
     // ── Endpoint de la nueva API Places (v1) ──
-    $url = 'https://places.googleapis.com/v1/places/' . $place_id . '?languageCode=es';
+    $url = 'https://places.googleapis.com/v1/places/' . rawurlencode($place_id) . '?languageCode=es';
 
     $response = wp_remote_get($url, [
         'timeout' => 15,
@@ -35,14 +42,14 @@ function get_google_reviews() {
     ]);
 
     if (is_wp_error($response)) {
-        return [];
+        return $fallback();
     }
 
     $http_code = wp_remote_retrieve_response_code($response);
     $body      = json_decode(wp_remote_retrieve_body($response), true);
 
     if ($http_code !== 200 || empty($body['reviews']) || !is_array($body['reviews'])) {
-        return [];
+        return $fallback();
     }
 
     // ── Normalizar y filtrar solo 5 estrellas ──
@@ -62,21 +69,11 @@ function get_google_reviews() {
         }
     }
 
-    // Guardar en caché por 2 días (solo si hay resultados)
-    if (!empty($normalized)) {
-        set_transient($transient_key, $normalized, 2 * DAY_IN_SECONDS);
+    if (empty($normalized)) {
+        return $fallback();
     }
 
+    set_transient($transient_key, $normalized, 2 * DAY_IN_SECONDS);
+    update_option('abc_google_reviews_last', $normalized, false);
     return $normalized;
 }
-
-// ── Endpoint REST público (lazy loading) ──
-add_action('rest_api_init', function () {
-    register_rest_route('abc/v1', '/reviews', [
-        'methods'             => 'GET',
-        'callback'            => function () {
-            return new WP_REST_Response(get_google_reviews(), 200);
-        },
-        'permission_callback' => '__return_true',
-    ]);
-});
