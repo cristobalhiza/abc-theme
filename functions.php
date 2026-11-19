@@ -1,16 +1,16 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
 $composer_autoload = __DIR__ . '/vendor/autoload.php';
 
-if ( file_exists( $composer_autoload ) ) {
+if (file_exists($composer_autoload)) {
     require_once $composer_autoload;
 } else {
     wp_die('Error fatal: Falta el directorio vendor en el tema. Ejecuta composer install.');
 }
-
+add_filter('xmlrpc_enabled', '__return_false');
 Timber\Timber::init();
 
 require_once __DIR__ . '/includes/timber.php';
@@ -18,3 +18,4 @@ require_once __DIR__ . '/includes/setup.php';
 require_once __DIR__ . '/includes/cpt.php';
 require_once __DIR__ . '/includes/api.php';
 require_once __DIR__ . '/includes/google-reviews.php';
+require_once __DIR__ . '/includes/login.php';
