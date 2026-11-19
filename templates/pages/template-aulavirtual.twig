@@ -1,0 +1,44 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden min-h-[80vh]">
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <svg class="w-full h-full opacity-10 text-primary" preserveAspectRatio="none" viewBox="0 0 1440 800">
+            <path class="road-line" style="stroke-dasharray: 1000; stroke-dashoffset: 0;" d="M-100,400 C300,400 500,200 800,200 S1200,600 1600,600" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="20"></path>
+            <path class="road-line text-accent" style="stroke-dasharray: 20 20;" d="M800,200 C850,200 900,100 920,50" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="12"></path>
+        </svg>
+    </div>
+
+    <div class="z-10 max-w-4xl w-full flex flex-col items-center text-center mt-16 pb-12">
+        <div class="relative mb-12">
+            <div class="bg-white p-8 md:p-12 rounded-[32px] shadow-float relative border border-gray-100 text-primary">
+                {# Monitor con birrete: aula virtual #}
+                <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12.5" rx="2" stroke-width="1.5"/><path stroke-linecap="round" stroke-width="1.5" d="M8 20h8M12 16.5V20"/><path stroke-linejoin="round" stroke-width="1.5" d="M12 7l5 2.25L12 11.5 7 9.25 12 7z"/><path stroke-linecap="round" stroke-width="1.5" d="M9 10.2v2.3c0 .6 1.35 1.5 3 1.5s3-.9 3-1.5v-2.3"/></svg>
+
+                <div class="absolute -top-4 -right-4 bg-accent text-white p-3 md:p-4 rounded-full shadow-lg border-4 border-white">
+                    {# Llave inglesa: en arreglos #}
+                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2.4-.6-.6-2.4 2.6-2.6z"/></svg>
+                </div>
+            </div>
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-48 h-2 bg-primary rounded-full opacity-20"></div>
+        </div>
+
+        <h1 class="font-display text-5xl md:text-7xl font-bold tracking-tight text-text-main mb-6">
+            Haciendo arreglos, ¡estaremos de vuelta muy pronto!
+        </h1>
+        <div class="max-w-2xl">
+            <p class="font-body text-xl md:text-2xl text-muted font-medium leading-relaxed mb-4">
+                Nuestra Aula Virtual está en mantención.
+            </p>
+            <p class="font-body text-lg text-gray-500 mb-10">
+                Estamos mejorando la plataforma para que sigas avanzando hacia tu licencia. Si necesitas ayuda con tu curso mientras tanto, <button type="button" @click="$dispatch('open-contact-modal')" class="text-primary font-bold underline">escríbenos</button> y te atenderemos.
+            </p>
+        </div>
+
+        <a href="{{ site.url }}" class="group flex items-center justify-center gap-3 bg-primary hover:brightness-110 text-white font-display text-lg font-bold px-10 py-5 rounded-2xl transition-all duration-300 transform active:scale-95 shadow-lg shadow-primary/30 w-full sm:w-auto">
+            <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Regresar al Inicio
+        </a>
+    </div>
+</main>
+{% endblock %}
